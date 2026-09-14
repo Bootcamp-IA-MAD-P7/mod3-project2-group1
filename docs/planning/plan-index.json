@@ -1,0 +1,774 @@
+{
+  "stories": [
+    {
+      "n": 1,
+      "id": "US-01",
+      "level": "essential",
+      "domain": "manual-analysis",
+      "req": "PR-01",
+      "deps": [],
+      "size": "M",
+      "epic": "EP-01",
+      "gate": "Aprobar propuesta binaria para mocks; ML real espera OQ-02"
+    },
+    {
+      "n": 2,
+      "id": "US-02",
+      "level": "essential",
+      "domain": "platform",
+      "req": "PL-01, PL-02, PL-04",
+      "deps": [
+        1
+      ],
+      "size": "M",
+      "epic": "EP-01",
+      "gate": "OQ-09"
+    },
+    {
+      "n": 3,
+      "id": "US-03",
+      "level": "essential",
+      "domain": "data-lifecycle",
+      "req": "DA-01",
+      "deps": [],
+      "size": "S",
+      "epic": "EP-02",
+      "gate": "OQ-01/02 se resuelven aquí"
+    },
+    {
+      "n": 4,
+      "id": "US-04",
+      "level": "essential",
+      "domain": "data-lifecycle",
+      "req": "DA-03",
+      "deps": [
+        5
+      ],
+      "size": "M",
+      "epic": "EP-02",
+      "gate": "OQ-04"
+    },
+    {
+      "n": 5,
+      "id": "US-05",
+      "level": "essential",
+      "domain": "data-lifecycle",
+      "req": "DA-02",
+      "deps": [
+        3
+      ],
+      "size": "M",
+      "epic": "EP-02",
+      "gate": "OQ-01/02 cerradas; tamaños condicionan split"
+    },
+    {
+      "n": 6,
+      "id": "US-06",
+      "level": "essential",
+      "domain": "text-features",
+      "req": "TX-01",
+      "deps": [
+        4,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-02",
+      "gate": "Idioma aprobado en OQ-01"
+    },
+    {
+      "n": 7,
+      "id": "US-07",
+      "level": "essential",
+      "domain": "text-features",
+      "req": "TX-02",
+      "deps": [
+        5,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-02",
+      "gate": "Dataset y protocolo aprobados"
+    },
+    {
+      "n": 8,
+      "id": "US-08",
+      "level": "essential",
+      "domain": "text-features",
+      "req": "TX-03",
+      "deps": [
+        6,
+        7
+      ],
+      "size": "M",
+      "epic": "EP-02",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 9,
+      "id": "US-09",
+      "level": "essential",
+      "domain": "manual-analysis",
+      "req": "PR-01",
+      "deps": [
+        1,
+        2
+      ],
+      "size": "M",
+      "epic": "EP-04",
+      "gate": "Contrato US-01 aprobado"
+    },
+    {
+      "n": 10,
+      "id": "US-10",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-01, ML-02",
+      "deps": [
+        5
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-03 se cierra antes de entrenar candidatos"
+    },
+    {
+      "n": 11,
+      "id": "US-11",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-01",
+      "deps": [
+        6,
+        7,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-05: aprobar candidato y asignación; OQ-03 cerrada"
+    },
+    {
+      "n": 12,
+      "id": "US-12",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-01",
+      "deps": [
+        6,
+        7,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-05: aprobar candidato y asignación; OQ-03 cerrada"
+    },
+    {
+      "n": 13,
+      "id": "US-13",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-01",
+      "deps": [
+        6,
+        7,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-05: aprobar candidato y asignación; OQ-03 cerrada"
+    },
+    {
+      "n": 14,
+      "id": "US-14",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-01",
+      "deps": [
+        6,
+        7,
+        10
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-05: aprobar candidato y asignación; OQ-03 cerrada"
+    },
+    {
+      "n": 15,
+      "id": "US-15",
+      "level": "essential",
+      "domain": "model-lifecycle",
+      "req": "ML-02, ML-03",
+      "deps": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-03 cerrada; promoción queda bloqueada si gate falla"
+    },
+    {
+      "n": 16,
+      "id": "US-16",
+      "level": "essential",
+      "domain": "manual-analysis",
+      "req": "PR-02",
+      "deps": [
+        9,
+        15
+      ],
+      "size": "M",
+      "epic": "EP-04",
+      "gate": "US-15 gate aprobado"
+    },
+    {
+      "n": 17,
+      "id": "US-17",
+      "level": "essential",
+      "domain": "manual-analysis",
+      "req": "PR-03",
+      "deps": [
+        1,
+        2
+      ],
+      "size": "M",
+      "epic": "EP-04",
+      "gate": "Contrato de mocks aprobado"
+    },
+    {
+      "n": 18,
+      "id": "US-18",
+      "level": "essential",
+      "domain": "manual-analysis",
+      "req": "PR-04",
+      "deps": [
+        16,
+        17
+      ],
+      "size": "S",
+      "epic": "EP-04",
+      "gate": "US-15 aprobado, contrato integrado y US-08 completada para cierre Essential; no bloquea inicio de integración/E2E"
+    },
+    {
+      "n": 19,
+      "id": "US-19",
+      "level": "medium",
+      "domain": "model-lifecycle",
+      "req": "ML-04",
+      "deps": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 20,
+      "id": "US-20",
+      "level": "medium",
+      "domain": "video-analysis",
+      "req": "VI-01",
+      "deps": [
+        1,
+        2
+      ],
+      "size": "M",
+      "epic": "EP-05",
+      "gate": "OQ-08 antes de verificación live"
+    },
+    {
+      "n": 21,
+      "id": "US-21",
+      "level": "medium",
+      "domain": "video-analysis",
+      "req": "VI-02",
+      "deps": [
+        16,
+        20
+      ],
+      "size": "M",
+      "epic": "EP-05",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 22,
+      "id": "US-22",
+      "level": "medium",
+      "domain": "video-analysis",
+      "req": "VI-03",
+      "deps": [
+        1,
+        2
+      ],
+      "size": "M",
+      "epic": "EP-05",
+      "gate": "Puede empezar con US-01/02; cerrar requiere US-21"
+    },
+    {
+      "n": 23,
+      "id": "US-23",
+      "level": "medium",
+      "domain": "model-lifecycle",
+      "req": "ML-05",
+      "deps": [
+        19
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 24,
+      "id": "US-24",
+      "level": "medium",
+      "domain": "quality-accessibility",
+      "req": "QA-01",
+      "deps": [
+        18,
+        21,
+        22,
+        23
+      ],
+      "size": "S",
+      "epic": "EP-07",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 25,
+      "id": "US-25",
+      "level": "advanced",
+      "domain": "model-lifecycle",
+      "req": "ML-06",
+      "deps": [
+        15
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-06"
+    },
+    {
+      "n": 26,
+      "id": "US-26",
+      "level": "advanced",
+      "domain": "video-analysis",
+      "req": "VI-04",
+      "deps": [
+        21,
+        22
+      ],
+      "size": "M",
+      "epic": "EP-05",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 27,
+      "id": "US-27",
+      "level": "advanced",
+      "domain": "platform",
+      "req": "PL-03",
+      "deps": [
+        18
+      ],
+      "size": "M",
+      "epic": "EP-01",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 28,
+      "id": "US-28",
+      "level": "advanced",
+      "domain": "platform",
+      "req": "PL-03",
+      "deps": [
+        27
+      ],
+      "size": "M",
+      "epic": "EP-01",
+      "gate": "OQ-07 y proveedor aprobados; cierre Advanced requiere US-24, US-25, US-26 y US-27 aceptadas"
+    },
+    {
+      "n": 29,
+      "id": "US-29",
+      "level": "expert",
+      "domain": "prediction-history",
+      "req": "DB-01, DB-03",
+      "deps": [
+        16,
+        27
+      ],
+      "size": "M",
+      "epic": "EP-06",
+      "gate": "Política OQ-07 antes de guardar datos reales"
+    },
+    {
+      "n": 30,
+      "id": "US-30",
+      "level": "expert",
+      "domain": "prediction-history",
+      "req": "DB-01, DB-02",
+      "deps": [
+        17,
+        29
+      ],
+      "size": "M",
+      "epic": "EP-06",
+      "gate": "OQ-07 cerrada"
+    },
+    {
+      "n": 31,
+      "id": "US-31",
+      "level": "expert",
+      "domain": "model-lifecycle",
+      "req": "ML-07",
+      "deps": [
+        16,
+        25
+      ],
+      "size": "M",
+      "epic": "EP-03",
+      "gate": "OQ-06"
+    },
+    {
+      "n": 32,
+      "id": "US-32",
+      "level": "expert",
+      "domain": "green-observability",
+      "req": "GO-03",
+      "deps": [
+        10
+      ],
+      "size": "M",
+      "epic": "EP-07",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 33,
+      "id": "US-33",
+      "level": "expert",
+      "domain": "quality-accessibility",
+      "req": "QA-04",
+      "deps": [
+        28,
+        30,
+        31,
+        32
+      ],
+      "size": "M",
+      "epic": "EP-07",
+      "gate": "Ninguna adicional"
+    },
+    {
+      "n": 34,
+      "id": "US-34",
+      "level": "essential",
+      "domain": "platform",
+      "req": "PL-04",
+      "deps": [
+        18
+      ],
+      "size": "S",
+      "epic": "EP-01",
+      "gate": "Ninguna adicional"
+    }
+  ],
+  "domains": [
+    {
+      "id": "platform",
+      "requirements": [
+        {
+          "id": "PL-01",
+          "stories": [
+            "US-02",
+            "US-09",
+            "US-18"
+          ]
+        },
+        {
+          "id": "PL-02",
+          "stories": [
+            "US-02"
+          ]
+        },
+        {
+          "id": "PL-03",
+          "stories": [
+            "US-27",
+            "US-28"
+          ]
+        },
+        {
+          "id": "PL-04",
+          "stories": [
+            "US-01",
+            "US-34"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-lifecycle",
+      "requirements": [
+        {
+          "id": "DA-01",
+          "stories": [
+            "US-03"
+          ]
+        },
+        {
+          "id": "DA-02",
+          "stories": [
+            "US-05"
+          ]
+        },
+        {
+          "id": "DA-03",
+          "stories": [
+            "US-04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "text-features",
+      "requirements": [
+        {
+          "id": "TX-01",
+          "stories": [
+            "US-06"
+          ]
+        },
+        {
+          "id": "TX-02",
+          "stories": [
+            "US-07"
+          ]
+        },
+        {
+          "id": "TX-03",
+          "stories": [
+            "US-08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "model-lifecycle",
+      "requirements": [
+        {
+          "id": "ML-01",
+          "stories": [
+            "US-10",
+            "US-11",
+            "US-12",
+            "US-13",
+            "US-14"
+          ]
+        },
+        {
+          "id": "ML-02",
+          "stories": [
+            "US-10",
+            "US-15"
+          ]
+        },
+        {
+          "id": "ML-03",
+          "stories": [
+            "US-15"
+          ]
+        },
+        {
+          "id": "ML-04",
+          "stories": [
+            "US-19"
+          ]
+        },
+        {
+          "id": "ML-05",
+          "stories": [
+            "US-23"
+          ]
+        },
+        {
+          "id": "ML-06",
+          "stories": [
+            "US-25"
+          ]
+        },
+        {
+          "id": "ML-07",
+          "stories": [
+            "US-31"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manual-analysis",
+      "requirements": [
+        {
+          "id": "PR-01",
+          "stories": [
+            "US-01",
+            "US-09"
+          ]
+        },
+        {
+          "id": "PR-02",
+          "stories": [
+            "US-16"
+          ]
+        },
+        {
+          "id": "PR-03",
+          "stories": [
+            "US-17"
+          ]
+        },
+        {
+          "id": "PR-04",
+          "stories": [
+            "US-18"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "video-analysis",
+      "requirements": [
+        {
+          "id": "VI-01",
+          "stories": [
+            "US-20"
+          ]
+        },
+        {
+          "id": "VI-02",
+          "stories": [
+            "US-21"
+          ]
+        },
+        {
+          "id": "VI-03",
+          "stories": [
+            "US-22"
+          ]
+        },
+        {
+          "id": "VI-04",
+          "stories": [
+            "US-26"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prediction-history",
+      "requirements": [
+        {
+          "id": "DB-01",
+          "stories": [
+            "US-29",
+            "US-30"
+          ]
+        },
+        {
+          "id": "DB-02",
+          "stories": [
+            "US-30"
+          ]
+        },
+        {
+          "id": "DB-03",
+          "stories": [
+            "US-29"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quality-accessibility",
+      "requirements": [
+        {
+          "id": "QA-01",
+          "stories": [
+            "US-02",
+            "US-06",
+            "US-09",
+            "US-18",
+            "US-24"
+          ]
+        },
+        {
+          "id": "QA-02",
+          "stories": [
+            "US-17",
+            "US-18"
+          ]
+        },
+        {
+          "id": "QA-03",
+          "stories": [
+            "US-28"
+          ]
+        },
+        {
+          "id": "QA-04",
+          "stories": [
+            "US-33"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "green-observability",
+      "requirements": [
+        {
+          "id": "GO-01",
+          "stories": [
+            "US-10",
+            "US-15"
+          ]
+        },
+        {
+          "id": "GO-02",
+          "stories": [
+            "US-16",
+            "US-19"
+          ]
+        },
+        {
+          "id": "GO-03",
+          "stories": [
+            "US-32"
+          ]
+        }
+      ]
+    }
+  ],
+  "closingDependencies": [
+    {
+      "story": "US-28",
+      "requires": "US-24"
+    },
+    {
+      "story": "US-28",
+      "requires": "US-25"
+    },
+    {
+      "story": "US-28",
+      "requires": "US-26"
+    },
+    {
+      "story": "US-18",
+      "requires": "US-08"
+    },
+    {
+      "story": "US-22",
+      "requires": "US-21"
+    }
+  ]
+}
