@@ -1,0 +1,166 @@
+[
+  {
+    "name": "manual-request",
+    "schema": "PredictionRequest",
+    "value": {
+      "text": "Comentario sintético de ejemplo"
+    }
+  },
+  {
+    "name": "prediction-score-unavailable",
+    "schema": "Prediction",
+    "value": {
+      "prediction_id": "11111111-1111-4111-8111-111111111111",
+      "label": "non_hate",
+      "score": null,
+      "score_kind": "unavailable",
+      "model_version": "fixture-v1",
+      "review_required": true,
+      "created_at": "2026-09-14T10:00:00Z",
+      "persistence": {
+        "status": "disabled"
+      },
+      "resource_token": null
+    }
+  },
+  {
+    "name": "prediction-calibrated",
+    "schema": "Prediction",
+    "value": {
+      "prediction_id": "11111111-1111-4111-8111-111111111111",
+      "label": "hate",
+      "score": 0.8,
+      "score_kind": "calibrated_probability",
+      "model_version": "fixture-v1",
+      "review_required": true,
+      "created_at": "2026-09-14T10:00:00Z",
+      "persistence": {
+        "status": "disabled"
+      },
+      "resource_token": null
+    }
+  },
+  {
+    "name": "validation-error",
+    "schema": "ErrorEnvelope",
+    "value": {
+      "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Mensaje sintético seguro",
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "details": []
+      }
+    }
+  },
+  {
+    "name": "model-unavailable",
+    "schema": "ErrorEnvelope",
+    "value": {
+      "error": {
+        "code": "MODEL_UNAVAILABLE",
+        "message": "Mensaje sintético seguro",
+        "request_id": "11111111-1111-4111-8111-111111111111",
+        "details": []
+      }
+    }
+  },
+  {
+    "name": "ready-without-expert",
+    "schema": "ReadyResponse",
+    "value": {
+      "status": "ready",
+      "model_version": "fixture-v1",
+      "capabilities": {
+        "prediction": true,
+        "video_analysis": false,
+        "monitoring": false,
+        "persistence": false
+      }
+    }
+  },
+  {
+    "name": "video-partial",
+    "schema": "Job",
+    "value": {
+      "analysis_id": "11111111-1111-4111-8111-111111111111",
+      "video_id": "abcdefghijk",
+      "status": "partial",
+      "fetched_count": 1,
+      "analyzed_count": 1,
+      "counts": {
+        "hate": 0,
+        "non_hate": 1
+      },
+      "truncated": false,
+      "stop_reason": "quota_exceeded",
+      "error": {
+        "error": {
+          "code": "QUOTA_EXCEEDED",
+          "message": "Mensaje sintético seguro",
+          "request_id": "11111111-1111-4111-8111-111111111111",
+          "details": []
+        }
+      },
+      "expires_at": "2026-09-14T11:00:00Z"
+    }
+  },
+  {
+    "name": "video-empty",
+    "schema": "Job",
+    "value": {
+      "analysis_id": "11111111-1111-4111-8111-111111111111",
+      "video_id": "abcdefghijk",
+      "status": "completed",
+      "fetched_count": 0,
+      "analyzed_count": 0,
+      "counts": {
+        "hate": 0,
+        "non_hate": 0
+      },
+      "truncated": false,
+      "stop_reason": "source_exhausted",
+      "error": null,
+      "expires_at": "2026-09-14T11:00:00Z"
+    }
+  },
+  {
+    "name": "result-page",
+    "schema": "ResultPage",
+    "value": {
+      "items": [
+        {
+          "comment_id": "fixture-comment",
+          "text": "Texto sintético",
+          "ordinal": 0,
+          "prediction": {
+            "prediction_id": "11111111-1111-4111-8111-111111111111",
+            "label": "non_hate",
+            "score": null,
+            "score_kind": "unavailable",
+            "model_version": "fixture-v1",
+            "review_required": true,
+            "created_at": "2026-09-14T10:00:00Z",
+            "persistence": {
+              "status": "disabled"
+            },
+            "resource_token": null
+          }
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  {
+    "name": "monitor-initial",
+    "schema": "Monitor",
+    "value": {
+      "monitor_id": "11111111-1111-4111-8111-111111111111",
+      "status": "active",
+      "interval_seconds": 300,
+      "expires_at": "2026-09-14T11:00:00Z",
+      "latest_analysis_id": null,
+      "latest_analysis_token": null,
+      "error": null
+    }
+  }
+]

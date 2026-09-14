@@ -1,0 +1,14 @@
+schema: spec-driven
+context: |
+  Proyecto greenfield Bootcamp-IA-MAD-P7/mod3-project2-group1.
+  Idioma documental: español. Fase actual: discovery y planificación, sin producto.
+  Dos servicios frontend React y backend FastAPI; ML es una librería local del backend.
+  Essential debe funcionar sin PostgreSQL, YouTube, MLflow ni redes neuronales.
+  Un único pyproject.toml para backend y ML. TDD obligatorio al implementar.
+  No entrenar, no ejecutar EDA, no publicar Issues en esta fase.
+  No operar sobre main. Revisar preguntas abiertas antes de sus historias afectadas.
+rules:
+  specs:
+    - Cada requisito MUST tener escenario WHEN/THEN e indicar nivel y trazabilidad.
+  tasks:
+    - Enlazar historias y evidencia RED GREEN REFACTOR o justificación documental.
