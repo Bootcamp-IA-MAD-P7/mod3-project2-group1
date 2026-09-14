@@ -1,50 +1,50 @@
-# %% 
-# import sys
+# %%
 import sys
 from pathlib import Path
-ROOT = Path.cwd().parent  # sube de notebooks/ a la raíz del repo
+
+ROOT = Path.cwd()
+while not (ROOT / "data" / "youtoxic_english_1000.csv").exists() and ROOT != ROOT.parent:
+    ROOT = ROOT.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 sns.set_theme(style="darkgrid")
+
 # %%
-df = pd.read_csv(ROOT / "data" / "stroke_dataset.csv")
+df = pd.read_csv(ROOT / "data" / "youtoxic_english_1000.csv")
 
-# [1] Calcular la matriz de correlación (solo numéricas)
-correlation = df.corr(numeric_only=True)
+TARGETS = [c for c in df.columns if c.startswith("Is") if df[c].nunique() > 1]
+X = df[TARGETS].replace({"TRUE": 1, "FALSE": 0}).astype(int)
 
-# [2] Heatmap de correlaciones
+# %%
+# [1] Correlación entre etiquetas (Pearson sobre 0/1 ≈ coeficiente phi)
+corr = X.corr()
 plt.figure(figsize=(10, 8))
-# annot=True muestra los números dentro de cada celda
-# cmap='coolwarm' usa colores: rojo=positivo, azul=negativo
-# center=0 centra la escala de colores en cero
-# vmin/vmax fijan la escala entre -1 y 1
-# linewidths=1 añade líneas entre celdas para mejor legibilidad
-sns.heatmap(correlation, annot=True, cmap='coolwarm', center=0,
-            vmin=-1, vmax=1,
-            linewidths=1, fmt='.2f', square=True)
-plt.title('Matriz de correlación - Stroke Dataset (variables numéricas)')
+sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, vmin=-1, vmax=1,
+            linewidths=1, fmt=".2f", square=True)
+plt.title("Correlación entre etiquetas de toxicidad")
 plt.tight_layout()
 plt.show()
 
+print("Correlaciones fuertes (|r| >= 0.3):")
+for i, a in enumerate(TARGETS):
+    for b in TARGETS[i + 1:]:
+        r = corr.loc[a, b]
+        if abs(r) >= 0.3:
+            print(f"  {a} ~ {b}: {r:+.2f}")
+
 # %%
-# VARIANTE CON VARIABLES CATEGÓRICAS CODIFICADAS
-# Codifica las categóricas (ordinal/one-hot) para incluir las no numéricas
-# en la matriz de correlación.
-cat_cols = ['gender', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
-
-df_corr = df.copy()
-for col in cat_cols:
-    df_corr[col] = pd.factorize(df_corr[col])[0]  # codificación ordinal simple
-
-plt.figure(figsize=(12, 10))
-corr_all = df_corr.corr(numeric_only=True)
-sns.heatmap(corr_all, annot=True, cmap='coolwarm', center=0,
-            vmin=-1, vmax=1,
-            linewidths=0.5, fmt='.2f', square=True)
-plt.title('Matriz de correlación - Stroke Dataset (numéricas + categóricas codificadas)')
+# [2] Matriz de co-ocurrencia: nº de comentarios donde ambas etiquetas son TRUE
+cooc = X.T @ X
+mask = np.eye(len(cooc), dtype=bool)
+plt.figure(figsize=(10, 8))
+sns.heatmap(cooc, annot=True, cmap="YlOrRd", mask=mask, fmt="d",
+            square=True, linewidths=1)
+plt.title("Co-ocurrencia de etiquetas (nº de comentarios con ambas)")
 plt.tight_layout()
 plt.show()

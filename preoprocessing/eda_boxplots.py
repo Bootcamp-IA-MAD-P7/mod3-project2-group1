@@ -1,60 +1,52 @@
-
-# %% 
-# import sys
+# %%
 import sys
 from pathlib import Path
 
-ROOT = Path.cwd().parent  # sube de notebooks/ a la raíz del repo
+ROOT = Path.cwd()
+while not (ROOT / "data" / "youtoxic_english_1000.csv").exists() and ROOT != ROOT.parent:
+    ROOT = ROOT.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import pandas as pd
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 
+sns.set_theme(style="darkgrid")
 
 # %%
-df = pd.read_csv(ROOT / "data" / "youtoxic_english_100.csv")
+df = pd.read_csv(ROOT / "data" / "youtoxic_english_1000.csv")
+df["text_len"] = df["Text"].str.len()
 
-
-# %%
-df.boxplot(column='Text', patch_artist=True, 
-           boxprops=dict(facecolor='lightgreen'))
-plt.title('Text')  
-plt.ylabel('agTexte')  
-plt.show()
-# %%
-df.boxplot(column='IsAbusive', patch_artist=True, 
-           boxprops=dict(facecolor='lightgreen'))
-plt.title('IsAbusive') 
-plt.ylabel('IsAbusive')  
-plt.show()
-# %%
-df.boxplot(column='IsThreat', patch_artist=True, 
-           boxprops=dict(facecolor='lightgreen'))
-plt.title('IsThreat') 
-plt.ylabel('IsThreat')  
-plt.show()
+TARGETS = [c for c in df.columns if c.startswith("Is") if df[c].nunique() > 1]
 
 # %%
-# Boxplots por grupo (ictus vs no ictus): más informativos que el univariante,
-# muestran cómo se distribuye cada variable según el resultado.
-sns.boxplot(x='stroke', y='age', hue='stroke', data=df, palette='Set2', legend=False)
-plt.title('Age by Stroke')
-plt.xlabel('stroke')
-plt.ylabel('age')
+# Las columnas binarias no tienen outliers: aquí los outliers están en la longitud del texto
+q1, q3 = df["text_len"].quantile([0.25, 0.75])
+iqr = q3 - q1
+umbral = q3 + 1.5 * iqr
+outliers = df[df["text_len"] > umbral]
+
+df.boxplot(column="text_len", patch_artist=True, boxprops=dict(facecolor="lightgreen"))
+plt.title(f"Longitud del texto (outliers por 1.5·IQR: {len(outliers)})")
+plt.ylabel("caracteres")
 plt.show()
+print(f"Q1={q1:.0f}, Q3={q3:.0f}, umbral={umbral:.0f}, outliers={len(outliers)}")
 
 # %%
-sns.boxplot(x='stroke', y='avg_glucose_level', hue='stroke', data=df, palette='Set2', legend=False)
-plt.title('Avg Glucose Level by Stroke')
-plt.xlabel('stroke')
-plt.ylabel('avg_glucose_level')
-plt.show()
+# ¿Cambia la longitud según la etiqueta? Boxplot de longitud por etiqueta
+for col in TARGETS:
+    sns.boxplot(x=col, y="text_len", data=df, hue=col, palette="Set2", legend=False)
+    plt.title(f"Longitud del texto según {col}")
+    plt.xlabel(col)
+    plt.ylabel("caracteres")
+    plt.show()
 
 # %%
-sns.boxplot(x='stroke', y='bmi', hue='stroke', data=df, palette='Set2', legend=False)
-plt.title('BMI by Stroke')
-plt.xlabel('stroke')
-plt.ylabel('bmi')
+# Número de etiquetas por comentario vs longitud (outliers multi-etiqueta)
+df["n_labels"] = df[TARGETS].astype(int).sum(axis=1)
+sns.boxplot(x="n_labels", y="text_len", data=df, palette="viridis")
+plt.title("Longitud del texto según número de etiquetas")
 plt.show()
+print(df["n_labels"].value_counts().sort_index())
