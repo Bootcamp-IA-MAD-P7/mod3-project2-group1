@@ -1,6 +1,10 @@
 import pandas as pd
 
-from ml.data.dataset import create_holdout_split, prepare_binary_dataset
+from ml.data.dataset import (
+    create_grouped_cv,
+    create_holdout_split,
+    prepare_binary_dataset,
+)
 
 
 def test_prepare_binary_dataset_keeps_required_columns():
@@ -122,3 +126,61 @@ def test_create_holdout_split_preserves_all_rows():
     dev, test = create_holdout_split(df)
 
     assert len(dev) + len(test) == len(df)
+
+
+def test_create_grouped_cv_uses_common_configuration():
+    """La validación común debe usar tres folds y una semilla reproducible."""
+    cv = create_grouped_cv()
+
+    assert cv.n_splits == 3
+    assert cv.shuffle is True
+    assert cv.random_state == 42
+
+
+def test_grouped_cv_never_shares_videos_between_train_and_validation():
+    """Un VideoId nunca puede aparecer a la vez en train y validation."""
+    df = pd.DataFrame(
+        {
+            "VideoId": [
+                "v1",
+                "v1",
+                "v2",
+                "v2",
+                "v3",
+                "v3",
+                "v4",
+                "v4",
+                "v5",
+                "v5",
+                "v6",
+                "v6",
+            ],
+            "Text": [f"comment {i}" for i in range(12)],
+            "IsToxic": [
+                False,
+                True,
+                False,
+                True,
+                False,
+                True,
+                False,
+                True,
+                False,
+                True,
+                False,
+                True,
+            ],
+        }
+    )
+
+    cv = create_grouped_cv()
+
+    for train_idx, validation_idx in cv.split(
+        df["Text"],
+        df["IsToxic"],
+        groups=df["VideoId"],
+    ):
+        train_videos = set(df.iloc[train_idx]["VideoId"])
+        validation_videos = set(df.iloc[validation_idx]["VideoId"])
+
+        assert train_videos.isdisjoint(validation_videos)
