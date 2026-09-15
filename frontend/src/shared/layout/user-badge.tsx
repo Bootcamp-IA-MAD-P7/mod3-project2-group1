@@ -1,0 +1,17 @@
+import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
+
+export function UserBadge() {
+  return (
+    <div className="hidden items-center gap-2.5 sm:flex">
+      <Avatar className="size-8 bg-gradient-to-br from-violet-500 to-purple-600">
+        <AvatarFallback className="bg-transparent text-xs font-semibold text-white">
+          M
+        </AvatarFallback>
+      </Avatar>
+      <div className="min-w-0 leading-tight">
+        <p className="truncate text-sm font-medium text-slate-900 dark:text-white">Moderator</p>
+        <p className="truncate text-xs text-slate-500 dark:text-slate-400">Content moderator</p>
+      </div>
+    </div>
+  )
+}
