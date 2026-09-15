@@ -1,11 +1,15 @@
 """Utilities for preparing and splitting datasets used by the ML pipeline."""
 
 import pandas as pd
+from sklearn.model_selection import StratifiedGroupKFold
 
 
 VIDEO_ID_COLUMN = "VideoId"
 TEXT_COLUMN = "Text"
 TARGET_COLUMN = "IsToxic"
+
+CV_N_SPLITS = 3
+RANDOM_STATE = 42
 
 HOLDOUT_VIDEO_IDS = {
     "4rCweDxDqdw",
@@ -37,3 +41,12 @@ def create_holdout_split(
     test = df.loc[is_holdout].copy().reset_index(drop=True)
 
     return dev, test
+
+
+def create_grouped_cv() -> StratifiedGroupKFold:
+    """Create the common grouped cross-validation strategy used by all models."""
+    return StratifiedGroupKFold(
+        n_splits=CV_N_SPLITS,
+        shuffle=True,
+        random_state=RANDOM_STATE,
+    )
