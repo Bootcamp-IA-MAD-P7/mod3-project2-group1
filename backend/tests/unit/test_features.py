@@ -1,7 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from ml.features.tfidf import create_tfidf_vectorizer
-from ml.preprocessing.text import normalize_text
+from ml.features.tfidf import create_tfidf_vectorizer, preprocess_for_tfidf
 
 
 def test_create_tfidf_vectorizer_returns_tfidf_vectorizer():
@@ -16,9 +15,9 @@ def test_tfidf_uses_common_configuration():
     vectorizer = create_tfidf_vectorizer()
 
     assert vectorizer.ngram_range == (1, 2)
-    assert vectorizer.lowercase is True
+    assert vectorizer.lowercase is False
     assert vectorizer.sublinear_tf is True
-    assert vectorizer.preprocessor is normalize_text
+    assert vectorizer.preprocessor is preprocess_for_tfidf
 
 
 def test_tfidf_does_not_remove_stopwords():
@@ -44,3 +43,15 @@ def test_tfidf_learns_vocabulary_only_when_fitted():
 
     assert hasattr(vectorizer, "vocabulary_")
     assert len(vectorizer.vocabulary_) > 0
+
+
+def test_tfidf_preprocessor_casefolds_text_without_duplicate_case_tokens():
+    """TF-IDF must treat uppercase and lowercase tokens as the same feature."""
+    vectorizer = create_tfidf_vectorizer()
+
+    assert vectorizer.build_analyzer()("HATE hate") == ["hate", "hate", "hate hate"]
+
+    vectorizer.fit(["HATE hate"])
+
+    assert "hate" in vectorizer.vocabulary_
+    assert "HATE" not in vectorizer.vocabulary_
