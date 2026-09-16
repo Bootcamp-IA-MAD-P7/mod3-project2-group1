@@ -6,7 +6,7 @@ El 14 de septiembre de 2026 el usuario confirmó un proyecto **greenfield** con 
 
 La inspección local encontró únicamente `.git`, sin commits ni remoto; GitHub CLI respondió 401 y Git tuvo errores TLS. Esto describe el entorno de la sesión, no contradice ni sustituye el assessment del repositorio real. La entrega se prepara fuera de su checkout operativo, sin escribir en referencias Git. No se afirma haber inspeccionado archivos remotos ni datos.
 
-Decisiones acordadas por el briefing: dos servicios desplegables; React/Vite/Tailwind/shadcn; FastAPI/Pydantic; ML dentro de backend y un solo `backend/pyproject.toml`; uv, Polars, scikit-learn, SQLAlchemy; PostgreSQL; SQLite compatible para tests; TDD; objetivo Expert con Essential independiente. No existe aún lockfile ni versión de runtime acordada.
+Decisiones acordadas por el briefing: dos servicios desplegables; React/Vite/Tailwind/shadcn; FastAPI/Pydantic; ML dentro de backend y un solo `backend/pyproject.toml`; uv, pandas, scikit-learn, SQLAlchemy; PostgreSQL; SQLite compatible para tests; TDD; objetivo Expert con Essential independiente. No existe aún lockfile ni versión de runtime acordada.
 
 ## PASO 2 — OPEN QUESTIONS
 
