@@ -16,6 +16,8 @@ def test_tfidf_uses_common_configuration():
 
     assert vectorizer.ngram_range == (1, 2)
     assert vectorizer.lowercase is False
+    assert vectorizer.min_df == 1
+    assert vectorizer.max_features is None
     assert vectorizer.sublinear_tf is True
     assert vectorizer.preprocessor is preprocess_for_tfidf
 
@@ -55,3 +57,15 @@ def test_tfidf_preprocessor_casefolds_text_without_duplicate_case_tokens():
 
     assert "hate" in vectorizer.vocabulary_
     assert "HATE" not in vectorizer.vocabulary_
+
+
+def test_tfidf_accepts_tuning_parameters_without_changing_preprocessing():
+    """Tuning may vary feature limits while retaining common preprocessing."""
+    vectorizer = create_tfidf_vectorizer(
+        ngram_range=(1, 1), min_df=2, max_features=100
+    )
+
+    assert vectorizer.ngram_range == (1, 1)
+    assert vectorizer.min_df == 2
+    assert vectorizer.max_features == 100
+    assert vectorizer.preprocessor is preprocess_for_tfidf
