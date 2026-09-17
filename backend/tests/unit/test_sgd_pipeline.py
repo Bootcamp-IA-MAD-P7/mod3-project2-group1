@@ -1,6 +1,7 @@
-from ml.models.sgd_pipeline import create_sgd_pipeline
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
+
+from ml.models.sgd_pipeline import create_sgd_pipeline
 
 
 def test_create_sgd_pipeline_contains_tfidf_and_classifier():

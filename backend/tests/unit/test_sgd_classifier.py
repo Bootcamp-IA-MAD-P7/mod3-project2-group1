@@ -1,5 +1,6 @@
-from ml.models.sgd_classifier import create_sgd_classifier
 from sklearn.linear_model import SGDClassifier
+
+from ml.models.sgd_classifier import create_sgd_classifier
 
 
 def test_create_sgd_classifier_returns_sgd_classifier():

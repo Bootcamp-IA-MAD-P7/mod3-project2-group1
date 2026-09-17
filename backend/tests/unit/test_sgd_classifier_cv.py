@@ -1,7 +1,8 @@
 import pandas as pd
 import pytest
-from ml.evaluation.sgd_classifier_cv import evaluate_sgd_classifier_cv
 from sklearn.metrics import f1_score
+
+from ml.evaluation.sgd_classifier_cv import evaluate_sgd_classifier_cv
 
 
 class RecordingPipeline:

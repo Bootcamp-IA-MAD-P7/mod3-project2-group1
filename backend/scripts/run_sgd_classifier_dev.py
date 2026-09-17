@@ -5,6 +5,9 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import f1_score
+
 from ml.data.dataset import (
     HOLDOUT_VIDEO_IDS,
     TARGET_COLUMN,
@@ -20,8 +23,6 @@ from ml.evaluation.sgd_classifier_tuning import (
     build_first_tuning_configurations,
     evaluate_tuning_configuration,
 )
-from sklearn.dummy import DummyClassifier
-from sklearn.metrics import f1_score
 
 DATA_PATH = Path("data/youtoxic_english_1000.csv")
 REPORT_PATH = Path("docs/reports/experiments/sgd_classifier_dev.json")
