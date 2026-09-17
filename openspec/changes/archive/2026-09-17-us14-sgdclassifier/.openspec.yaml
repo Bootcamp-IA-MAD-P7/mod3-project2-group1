@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-09-17
+goal: Evaluar y documentar el cuarto clásico para EP-03/ML-01
+skip_specs: true
