@@ -22,7 +22,6 @@ from ml.evaluation.linear_svc_tuning import (
 )
 from ml.evaluation.metrics import evaluate_binary_classification
 from ml.models.baseline import create_dummy_classifier
-from ml.models.linear_svc_pipeline import create_linear_svc_pipeline
 
 DATA_PATH = Path(__file__).resolve().parents[3] / "data" / "youtoxic_english_1000.csv"
 
@@ -86,7 +85,7 @@ def _print_round(results: list[dict], round_label: str) -> None:
         cfg = result["configuration"]
         s = result["summary"]
         print(
-            f"{cfg['c']:<8} {str(cfg['ngram_range']):<8} "
+            f"{cfg['c']:<8} {cfg['ngram_range']!s:<8} "
             f"{s['validation_f1_mean']:<11.4f} {s['validation_f1_std']:<10.4f} "
             f"{s['validation_f1_min']:<10.4f} {s['validation_f1_max']:<10.4f} "
             f"{s['validation_macro_f1_mean']:<8.4f} "
@@ -122,7 +121,6 @@ def main() -> None:
     start = time.perf_counter()
 
     dev, test = _prepare_data()
-    y = dev[TARGET_COLUMN]
     print(f"dev_samples={len(dev)} test_samples={len(test)} (sellado)")
 
     # ---- Baseline ----
@@ -180,7 +178,7 @@ def main() -> None:
     print("\n=== FINAL LINEAR SVC ===")
     print(f"c_final={w3_cfg['c']}")
     print(f"ngram_range_final={w3_cfg['ngram_range']}")
-    print(f"min_df_final=1 max_features_final=None")
+    print("min_df_final=1 max_features_final=None")
     print(f"validation_f1_mean={s['validation_f1_mean']:.4f}")
     print(f"validation_f1_std={s['validation_f1_std']:.4f}")
     print(f"validation_f1_min={s['validation_f1_min']:.4f}")

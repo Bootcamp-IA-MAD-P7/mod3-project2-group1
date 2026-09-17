@@ -2,7 +2,6 @@
 
 from sklearn.svm import LinearSVC
 
-
 RANDOM_STATE = 42
 MAX_ITER = 1000
 
