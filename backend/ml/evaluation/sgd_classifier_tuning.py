@@ -8,7 +8,12 @@ from typing import Any
 import pandas as pd
 from sklearn.metrics import f1_score
 
-from ml.data.dataset import TEXT_COLUMN, TARGET_COLUMN, VIDEO_ID_COLUMN, create_grouped_cv
+from ml.data.dataset import (
+    TARGET_COLUMN,
+    TEXT_COLUMN,
+    VIDEO_ID_COLUMN,
+    create_grouped_cv,
+)
 from ml.evaluation.metrics import evaluate_binary_classification
 from ml.models.sgd_pipeline import create_sgd_pipeline
 

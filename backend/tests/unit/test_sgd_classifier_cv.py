@@ -1,8 +1,7 @@
 import pandas as pd
 import pytest
-from sklearn.metrics import f1_score
-
 from ml.evaluation.sgd_classifier_cv import evaluate_sgd_classifier_cv
+from sklearn.metrics import f1_score
 
 
 class RecordingPipeline:
@@ -66,7 +65,6 @@ def test_grouped_cv_creates_a_fresh_pipeline_for_each_fold():
 
 def test_grouped_cv_raises_value_error_on_video_overlap(monkeypatch):
     """A leaked VideoId must abort evaluation instead of silently leaking."""
-    import ml.data.dataset as dataset
     from ml.evaluation import sgd_classifier_cv
 
     monkeypatch.setattr(sgd_classifier_cv, "create_grouped_cv", lambda: OverlappingSplitter())
