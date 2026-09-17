@@ -1,0 +1,136 @@
+{
+  "model": "LinearSVC",
+  "selection_label": "best configuration observed on DEV",
+  "environment": {
+    "python": "3.12.13",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.0.5"
+  },
+  "data_protocol": {
+    "source": "youtoxic_english_1000.csv",
+    "prepared_rows": 995,
+    "development_rows": 808,
+    "holdout_group_column": "VideoId",
+    "test_sealed": true,
+    "test_used_for_fitting_tuning_prediction_metrics_or_inspection": false,
+    "cross_validation": {
+      "strategy": "StratifiedGroupKFold",
+      "n_splits": 3,
+      "shuffle": true,
+      "random_state": 42,
+      "zero_video_overlap_per_fold": true
+    },
+    "primary_metric": "toxic_class_f1_validation_mean"
+  },
+  "selected_configuration": {
+    "C": 16.0,
+    "loss": "squared_hinge",
+    "min_df": 1,
+    "max_features": null,
+    "ngram_range": [1, 1],
+    "random_state": 42,
+    "max_iter": 1000,
+    "threshold_tuning": false,
+    "resampling": false
+  },
+  "baseline": {
+    "configuration": {"C": 1.0, "min_df": 1, "max_features": null, "ngram_range": [1, 2]},
+    "validation_f1_mean": 0.5362242693503844,
+    "validation_f1_std": 0.014491406564958818,
+    "validation_f1_min": 0.5164319248826291,
+    "validation_f1_max": 0.5507246376811594,
+    "validation_precision_mean": 0.6193735945829859,
+    "validation_recall_mean": 0.5135548388015493,
+    "validation_macro_f1_mean": 0.5851854967854856,
+    "validation_accuracy_mean": 0.5954988545999901,
+    "train_f1_mean": 1.0,
+    "f1_gap_percentage_points": 46.37757306496157
+  },
+  "tuning": {
+    "round_1": {
+      "candidate_count": 6,
+      "configurations": [
+        {"C": 0.01, "min_df": 1, "max_features": null, "ngram_range": [1, 1], "validation_f1_mean": 0.17178881008668243},
+        {"C": 0.01, "min_df": 1, "max_features": null, "ngram_range": [1, 2], "validation_f1_mean": 0.17254901960784316},
+        {"C": 0.1, "min_df": 1, "max_features": null, "ngram_range": [1, 1], "validation_f1_mean": 0.41338270826241635},
+        {"C": 0.1, "min_df": 1, "max_features": null, "ngram_range": [1, 2], "validation_f1_mean": 0.33795937474701604},
+        {"C": 1.0, "min_df": 1, "max_features": null, "ngram_range": [1, 1], "validation_f1_mean": 0.5535787201123507},
+        {"C": 1.0, "min_df": 1, "max_features": null, "ngram_range": [1, 2], "validation_f1_mean": 0.5362242693503844}
+      ],
+      "best_configuration": {"C": 1.0, "min_df": 1, "max_features": null, "ngram_range": [1, 1]},
+      "best_validation_f1_mean": 0.5535787201123507
+    },
+    "round_2": {
+      "candidate_count": 5,
+      "C_values": [0.25, 0.5, 1.0, 2.0, 4.0],
+      "best_C": 4.0,
+      "best_validation_f1_mean": 0.5689245313036415,
+      "control_C": 1.0,
+      "control_reproduced_f1": 0.5535787201123507,
+      "range_closed_at_C": 4.0
+    },
+    "round_3": {
+      "candidate_count": 5,
+      "C_values": [1.0, 2.0, 4.0, 8.0, 16.0],
+      "best_C": 16.0,
+      "best_validation_f1_mean": 0.5741150163769212,
+      "control_C": 1.0,
+      "control_reproduced_f1": 0.5535787201123507,
+      "range_closed_at_C": 16.0
+    }
+  },
+  "selected_results": {
+    "summary": {
+      "validation_f1_mean": 0.5741150163769212,
+      "validation_f1_std": 0.04097707910231924,
+      "validation_f1_min": 0.5185185185185185,
+      "validation_f1_max": 0.6160714285714286,
+      "validation_precision_mean": 0.6117637844611529,
+      "validation_recall_mean": 0.5510477187286398,
+      "validation_macro_f1_mean": 0.609082469750665,
+      "validation_accuracy_mean": 0.6196553135752906,
+      "train_f1_mean": 1.0,
+      "f1_gap_percentage_points": 42.58849836230788
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "train_size": 490,
+        "validation_size": 318,
+        "train_video_count": 6,
+        "validation_video_count": 3,
+        "video_overlap": [],
+        "validation_metrics": {"accuracy": 0.6320754716981132, "precision": 0.47368421052631576, "recall": 0.5727272727272728, "f1": 0.5185185185185185, "macro_f1": 0.6104042974271982, "confusion_matrix": [[138, 70], [47, 63]]},
+        "train_metrics": {"accuracy": 1.0, "precision": 1.0, "recall": 1.0, "f1": 1.0, "macro_f1": 1.0, "confusion_matrix": [[229, 0], [0, 261]]}
+      },
+      {
+        "fold": 2,
+        "train_size": 524,
+        "validation_size": 284,
+        "train_video_count": 7,
+        "validation_video_count": 2,
+        "video_overlap": [],
+        "validation_metrics": {"accuracy": 0.6443661971830986, "precision": 0.6428571428571429, "recall": 0.5413533834586466, "f1": 0.5877551020408164, "macro_f1": 0.637530801794402, "confusion_matrix": [[111, 40], [61, 72]]},
+        "train_metrics": {"accuracy": 1.0, "precision": 1.0, "recall": 1.0, "f1": 1.0, "macro_f1": 1.0, "confusion_matrix": [[286, 0], [0, 238]]}
+      },
+      {
+        "fold": 3,
+        "train_size": 602,
+        "validation_size": 206,
+        "train_video_count": 5,
+        "validation_video_count": 4,
+        "video_overlap": [],
+        "validation_metrics": {"accuracy": 0.5825242718446602, "precision": 0.71875, "recall": 0.5390625, "f1": 0.6160714285714286, "macro_f1": 0.5793123100303952, "confusion_matrix": [[51, 27], [59, 69]]},
+        "train_metrics": {"accuracy": 1.0, "precision": 1.0, "recall": 1.0, "f1": 1.0, "macro_f1": 1.0, "confusion_matrix": [[359, 0], [0, 243]]}
+      }
+    ]
+  },
+  "limitations": [
+    "Only nine VideoId groups in DEV",
+    "Substantial video-level distribution shift",
+    "Train-validation gap remains 42.59 percentage points (perfect training fit, train_f1=1.0000)",
+    "C=16.0 sits at the upper edge of the evaluated grid; optimal C may lie outside the range",
+    "Not a global optimum",
+    "Must be compared with Dummy, MultinomialNB, LogisticRegression, and SGDClassifier before one authorised TEST evaluation"
+  ]
+}
