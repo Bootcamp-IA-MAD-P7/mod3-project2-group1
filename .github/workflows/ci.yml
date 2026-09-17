@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, "feature/**", "docs/**"]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - name: Sync deps with uv.lock
+        run: uv sync --all-groups
+        working-directory: backend
+      - name: Run tests
+        run: uv run pytest
+        working-directory: backend
+      - name: Lint (ruff)
+        run: uv run ruff check .
+        working-directory: backend
+
+  frontend:
+    name: Frontend (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install deps with lockfile
+        run: npm ci
+        working-directory: frontend
+      - name: Build
+        run: npm run build
+        working-directory: frontend

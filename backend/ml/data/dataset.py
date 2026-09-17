@@ -3,7 +3,6 @@
 import pandas as pd
 from sklearn.model_selection import StratifiedGroupKFold
 
-
 VIDEO_ID_COLUMN = "VideoId"
 TEXT_COLUMN = "Text"
 TARGET_COLUMN = "IsToxic"

@@ -7,10 +7,9 @@ from typing import Any
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from ml.data.dataset import TEXT_COLUMN, TARGET_COLUMN, VIDEO_ID_COLUMN, create_grouped_cv
+from ml.data.dataset import TARGET_COLUMN, TEXT_COLUMN, VIDEO_ID_COLUMN, create_grouped_cv
 from ml.evaluation.metrics import evaluate_binary_classification
 from ml.models.logistic_pipeline import create_logistic_pipeline
-
 
 PipelineFactory = Callable[[], Pipeline]
 

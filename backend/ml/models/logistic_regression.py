@@ -2,7 +2,6 @@
 
 from sklearn.linear_model import LogisticRegression
 
-
 RANDOM_STATE = 42
 MAX_ITER = 1000
 

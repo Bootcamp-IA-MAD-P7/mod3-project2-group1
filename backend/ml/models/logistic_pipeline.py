@@ -5,7 +5,6 @@ from sklearn.pipeline import Pipeline
 from ml.features.tfidf import create_tfidf_vectorizer
 from ml.models.logistic_regression import create_logistic_regression
 
-
 BEST_LOGISTIC_C_OBSERVED_ON_DEV = 5.0
 BEST_LOGISTIC_MIN_DF_OBSERVED_ON_DEV = 2
 BEST_LOGISTIC_MAX_FEATURES_OBSERVED_ON_DEV = None
