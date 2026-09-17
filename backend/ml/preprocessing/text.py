@@ -3,7 +3,6 @@
 import re
 import unicodedata
 
-
 URL_PATTERN = re.compile(r"https?://\S+|www\.\S+", flags=re.IGNORECASE)
 USER_MENTION_PATTERN = re.compile(r"(?<!\w)@\w+")
 WHITESPACE_PATTERN = re.compile(r"\s+")

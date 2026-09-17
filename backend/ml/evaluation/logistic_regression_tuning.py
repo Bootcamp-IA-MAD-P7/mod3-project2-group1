@@ -8,10 +8,9 @@ from typing import Any
 import pandas as pd
 from sklearn.metrics import f1_score
 
-from ml.data.dataset import TEXT_COLUMN, TARGET_COLUMN, VIDEO_ID_COLUMN, create_grouped_cv
+from ml.data.dataset import TARGET_COLUMN, TEXT_COLUMN, VIDEO_ID_COLUMN, create_grouped_cv
 from ml.evaluation.metrics import evaluate_binary_classification
 from ml.models.logistic_pipeline import create_logistic_pipeline
-
 
 BASELINE_F1_VALIDATION_MEAN = 0.3542
 BASELINE_REPRODUCTION_TOLERANCE = 0.0001

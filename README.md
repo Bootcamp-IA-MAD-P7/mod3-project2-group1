@@ -16,7 +16,39 @@ Herramienta de apoyo a moderación de comentarios de YouTube. Clasifica contenid
 
 ## Ejecución
 
-Todavía no existe una aplicación ejecutable. No se han creado endpoints, componentes, entrenamiento, EDA, dependencias de producto, Dockerfiles ni Makefile funcional. Los comandos futuros y variables se especifican en el diseño; el README se actualizará al implementar US-02 y US-09. Los ejemplos de contratos son fixtures de diseño, no predicciones reales.
+El backend (FastAPI + ML clásico) y el frontend (React/Vite) se ejecutan por separado. No hay
+servicios opcionales obligatorios; las capacidades deshabilitadas no bloquean el arranque esencial.
+
+Requisitos: [uv](https://docs.astral.sh/uv/), Node LTS con npm, Python >= 3.12.
+
+### Instalación reproducible (usa lockfiles, no descarga datos/modelos)
+
+```bash
+make setup            # backend: uv sync; frontend: npm ci
+```
+
+Equivalentes PowerShell: `scripts/setup.ps1`.
+
+### Comandos
+
+| Tarea | Make | PowerShell |
+|---|---|---|
+| Ayuda | `make help` | — |
+| Instalación | `make setup` | `scripts/setup.ps1` |
+| Backend (dev) | `make dev-backend` | `uv run uvicorn app.main:app --reload` |
+| Frontend (dev) | `make dev-frontend` | `npm run dev` (en `frontend/`) |
+| Tests completos | `make test` | `scripts/test.ps1` |
+| Tests backend | `make test-backend` | `uv run pytest` |
+| Tests/chequeo frontend | `make test-frontend` | `npm run build` |
+| Lint | `make lint` | `scripts/lint.ps1` |
+| Formato | `make format` | — |
+
+### Configuración
+
+Copiar `.env.example` a `.env` para desarrollo local y ajustar según el [diseño
+D-09](openspec/changes/define-project/design.md). Ningún secreto real en Git: los secretos van en el
+CI/proveedor. `MODEL_PATH` vacío solo afecta a readiness, no al arranque (liveness). El endpoint de
+predicción manual quedará disponible en la historia US-09.
 
 ## Incorporación a dev
 

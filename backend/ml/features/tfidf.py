@@ -4,7 +4,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 from ml.preprocessing.text import normalize_text
 
-
 NGRAM_RANGE = (1, 2)
 
 

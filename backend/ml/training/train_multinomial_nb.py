@@ -35,12 +35,10 @@ def _run_grouped_cv(
     """Evaluate one alpha using grouped CV on development data."""
     results = []
     groups = X[VIDEO_ID_COLUMN]
-    fold_n = 0
 
-    for train_idx, val_idx in create_grouped_cv().split(
-        X, y, groups=groups
+    for fold_n, (train_idx, val_idx) in enumerate(
+        create_grouped_cv().split(X, y, groups=groups), start=1
     ):
-        fold_n += 1
         vectorizer = create_tfidf_vectorizer()
         X_train_tfidf = vectorizer.fit_transform(X.loc[train_idx, "Text"])
         X_val_tfidf = vectorizer.transform(X.loc[val_idx, "Text"])
@@ -82,10 +80,10 @@ def _run_dummy_baseline(X: pd.DataFrame, y: pd.Series) -> list[dict]:
     """
     groups = X[VIDEO_ID_COLUMN]
     results = []
-    fold_n = 0
 
-    for train_idx, val_idx in create_grouped_cv().split(X, y, groups=groups):
-        fold_n += 1
+    for fold_n, (train_idx, val_idx) in enumerate(
+        create_grouped_cv().split(X, y, groups=groups), start=1
+    ):
         model = create_dummy_classifier()
         model.fit(X.loc[train_idx], y.loc[train_idx])
         train_metrics = evaluate_binary_classification(
