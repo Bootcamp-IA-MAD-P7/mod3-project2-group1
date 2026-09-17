@@ -1,0 +1,253 @@
+{
+  "model": "SGDClassifier",
+  "selection_label": "best configuration observed on DEV",
+  "environment": {
+    "python": "3.12.7",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.0.5"
+  },
+  "data_protocol": {
+    "source": "youtoxic_english_1000.csv",
+    "prepared_rows": 995,
+    "development_rows": 808,
+    "holdout_group_column": "VideoId",
+    "test_sealed": true,
+    "test_used_for_fitting_tuning_prediction_metrics_or_inspection": false,
+    "cross_validation": {
+      "strategy": "StratifiedGroupKFold",
+      "n_splits": 3,
+      "shuffle": true,
+      "random_state": 42,
+      "zero_video_overlap_per_fold": true
+    },
+    "primary_metric": "toxic_class_f1_validation_mean"
+  },
+  "selected_configuration": {
+    "loss": "log_loss",
+    "alpha": 0.0001,
+    "penalty": "elasticnet",
+    "random_state": 42,
+    "max_iter": 1000,
+    "min_df": 1,
+    "max_features": null,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "threshold_tuning": false,
+    "resampling": false
+  },
+  "baseline": {
+    "configuration": {
+      "alpha": 0.0001,
+      "penalty": "l2"
+    },
+    "reproduced_deterministically": true,
+    "validation_f1_mean": 0.5368529535070419,
+    "validation_f1_std": 0.0170619846240173,
+    "validation_precision_mean": 0.6147211749340825,
+    "validation_recall_mean": 0.516159005468216,
+    "validation_macro_f1_mean": 0.584147504214413,
+    "validation_accuracy_mean": 0.5943251456798023,
+    "train_f1_mean": 1.0,
+    "f1_gap_percentage_points": 46.31470464929581
+  },
+  "tuning": {
+    "round_1": {
+      "candidate_count": 6,
+      "grid": {
+        "alpha": [
+          1e-05,
+          0.0001,
+          0.001
+        ],
+        "penalty": [
+          "l2",
+          "elasticnet"
+        ]
+      },
+      "best_configuration": {
+        "alpha": 0.0001,
+        "penalty": "elasticnet",
+        "loss": "log_loss"
+      },
+      "best_validation_f1_mean": 0.5370362692322753,
+      "ranked": [
+        {
+          "configuration": {
+            "alpha": 0.001,
+            "penalty": "l2",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.41332257315863874,
+          "validation_macro_f1_mean": 0.5238244168067451,
+          "f1_gap_percentage_points": 58.53527929882931
+        },
+        {
+          "configuration": {
+            "alpha": 0.001,
+            "penalty": "elasticnet",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.43760324642677584,
+          "validation_macro_f1_mean": 0.5373990058579784,
+          "f1_gap_percentage_points": 39.734463556889146
+        },
+        {
+          "configuration": {
+            "alpha": 1e-05,
+            "penalty": "l2",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.5233877276058542,
+          "validation_macro_f1_mean": 0.5749563009150848,
+          "f1_gap_percentage_points": 47.661227239414586
+        },
+        {
+          "configuration": {
+            "alpha": 1e-05,
+            "penalty": "elasticnet",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.524381650227349,
+          "validation_macro_f1_mean": 0.5745327710197623,
+          "f1_gap_percentage_points": 47.56183497726511
+        },
+        {
+          "configuration": {
+            "alpha": 0.0001,
+            "penalty": "l2",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.5368529535070419,
+          "validation_macro_f1_mean": 0.584147504214413,
+          "f1_gap_percentage_points": 46.31470464929581
+        },
+        {
+          "configuration": {
+            "alpha": 0.0001,
+            "penalty": "elasticnet",
+            "loss": "log_loss"
+          },
+          "validation_f1_mean": 0.5370362692322753,
+          "validation_macro_f1_mean": 0.5861954952494042,
+          "f1_gap_percentage_points": 46.29637307677247
+        }
+      ]
+    }
+  },
+  "selected_results": {
+    "summary": {
+      "validation_f1_mean": 0.5370362692322753,
+      "validation_f1_std": 0.013385693448865095,
+      "validation_precision_mean": 0.6222744384648425,
+      "validation_recall_mean": 0.5135548388015493,
+      "validation_macro_f1_mean": 0.5861954952494042,
+      "validation_accuracy_mean": 0.5966725635201778,
+      "train_f1_mean": 1.0,
+      "f1_gap_percentage_points": 46.29637307677247
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "train_size": 490,
+        "validation_size": 318,
+        "train_video_count": 6,
+        "validation_video_count": 3,
+        "video_overlap": [],
+        "vocabulary_size": 12819,
+        "train_density": 0.003795227428673318,
+        "validation_density": 0.0027921407933683344,
+        "validation_metrics": {
+          "accuracy": 0.60062893081761,
+          "precision": 0.4491017964071856,
+          "recall": 0.6818181818181818,
+          "f1": 0.5415162454873647,
+          "macro_f1": 0.5938778999024568,
+          "confusion_matrix": [
+            [
+              116,
+              92
+            ],
+            [
+              35,
+              75
+            ]
+          ]
+        }
+      },
+      {
+        "fold": 2,
+        "train_size": 524,
+        "validation_size": 284,
+        "train_video_count": 7,
+        "validation_video_count": 2,
+        "video_overlap": [],
+        "vocabulary_size": 15013,
+        "train_density": 0.003718787229185088,
+        "validation_density": 0.0020111677860408304,
+        "validation_metrics": {
+          "accuracy": 0.6408450704225352,
+          "precision": 0.6962025316455697,
+          "recall": 0.41353383458646614,
+          "f1": 0.5188679245283019,
+          "macro_f1": 0.6161755352978588,
+          "confusion_matrix": [
+            [
+              127,
+              24
+            ],
+            [
+              78,
+              55
+            ]
+          ]
+        }
+      },
+      {
+        "fold": 3,
+        "train_size": 602,
+        "validation_size": 206,
+        "train_video_count": 5,
+        "validation_video_count": 4,
+        "video_overlap": [],
+        "vocabulary_size": 18585,
+        "train_density": 0.00330920963839484,
+        "validation_density": 0.0012158777174409888,
+        "validation_metrics": {
+          "accuracy": 0.5485436893203883,
+          "precision": 0.7215189873417721,
+          "recall": 0.4453125,
+          "f1": 0.5507246376811594,
+          "macro_f1": 0.5485330505478968,
+          "confusion_matrix": [
+            [
+              56,
+              22
+            ],
+            [
+              71,
+              57
+            ]
+          ]
+        }
+      }
+    ]
+  },
+  "dummy_benchmark": {
+    "toxic_f1_mean": 0.17133956386292834
+  },
+  "comparison": {
+    "logistic_regression_best_validation_f1_mean": 0.5518354735036822,
+    "sgd_best_validation_f1_mean": 0.5370362692322753,
+    "vs_lr_f1_pp": -1.4799204271406907,
+    "vs_dummy_f1_pp": 36.569670536934694
+  },
+  "limitations": [
+    "Only nine VideoId groups in DEV",
+    "Substantial video-level distribution shift",
+    "SGDClassifier(log_loss) overlaps conceptually with Logistic Regression (linear model, log-loss); the final choice rests on the ML-01 comparison, not on this change",
+    "Train-validation gap remains 46.30 percentage points",
+    "margin/score is not calibrated and is not presented as probability"
+  ]
+}
