@@ -1,5 +1,4 @@
-import type { ActivityRisk, ActivityStatus, RecentActivityItem } from "@/mocks/dashboard"
-import { RECENT_ACTIVITY } from "@/mocks/dashboard"
+import type { ModerationLabel, RecentActivityItem } from "@/features/dashboard/dashboard-view-model"
 import { Card } from "@/shared/ui/card"
 import {
   Table,
@@ -12,98 +11,80 @@ import {
 } from "@/shared/ui/table"
 import { cn } from "@/lib/utils"
 
-const STATUS_STYLES: Record<
-  ActivityStatus,
-  { label: string; badge: string; dot: string }
-> = {
-  safe: {
-    label: "Safe",
-    badge: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
-    dot: "bg-emerald-500",
+interface RecentActivityProps {
+  activity: RecentActivityItem[]
+}
+
+const STATUS_STYLES: Record<ModerationLabel, { label: string; badge: string; dot: string }> = {
+  hate: {
+    label: "Hate",
+    badge: "bg-violet-100 text-violet-800 dark:bg-violet-500/20 dark:text-violet-200",
+    dot: "bg-violet-600",
   },
-  "potentially-toxic": {
-    label: "Potentially toxic",
-    badge: "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
-    dot: "bg-amber-500",
-  },
-  "high-risk": {
-    label: "High risk",
-    badge: "bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-400",
-    dot: "bg-rose-500",
+  non_hate: {
+    label: "Non-hate",
+    badge: "bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-100",
+    dot: "bg-slate-500",
   },
 }
 
-const RISK_STYLES: Record<ActivityRisk, { label: string; text: string }> = {
-  low: { label: "Low", text: "text-emerald-700 dark:text-emerald-400" },
-  medium: { label: "Medium", text: "text-amber-700 dark:text-amber-400" },
-  high: { label: "High", text: "text-rose-700 dark:text-rose-400" },
-}
+function StatusBadge({ label }: { label: ModerationLabel }) {
+  const style = STATUS_STYLES[label]
 
-function StatusBadge({ status }: { status: ActivityStatus }) {
-  const style = STATUS_STYLES[status]
   return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
-        style.badge
-      )}
-    >
+    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold", style.badge)}>
       <span aria-hidden="true" className={cn("size-1.5 rounded-full", style.dot)} />
       {style.label}
     </span>
   )
 }
 
-function RiskBadge({ risk }: { risk: ActivityRisk }) {
-  const style = RISK_STYLES[risk]
-  return (
-    <span className={cn("inline-flex items-center gap-1.5 text-sm font-medium", style.text)}>
-      <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-      {style.label}
-    </span>
-  )
-}
-
-const EXAMPLE_COMMENT: RecentActivityItem = RECENT_ACTIVITY[0]
-
-export function RecentActivity() {
+export function RecentActivity({ activity }: RecentActivityProps) {
   return (
     <Card className="h-full p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold text-slate-900 dark:text-white">Recent activity</h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Latest comments reviewed by the moderation system
+            A selection of recently reviewed comments.
           </p>
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 sm:hidden">
+        <ul className="space-y-3" aria-label="Recent moderation activity">
+          {activity.map((item) => (
+            <li key={item.id} className="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+              <article className="space-y-3">
+                <p className="break-words text-sm text-slate-600 dark:text-slate-300">{item.comment}</p>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <StatusBadge label={item.label} />
+                  <time className="text-sm text-slate-500 dark:text-slate-400">{item.date}</time>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-4 hidden sm:block">
         <Table>
-          <TableCaption>
-            Example of moderation results displayed in the table. {EXAMPLE_COMMENT.comment}
-          </TableCaption>
+          <TableCaption>Moderation results displayed in the dashboard.</TableCaption>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-full min-w-56">Comment</TableHead>
-              <TableHead className="min-w-32">Status</TableHead>
-              <TableHead className="min-w-20">Risk</TableHead>
+              <TableHead className="min-w-56">Comment</TableHead>
+              <TableHead className="min-w-32">Classification</TableHead>
               <TableHead className="min-w-28 text-right">Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {RECENT_ACTIVITY.map((item) => (
+            {activity.map((item) => (
               <TableRow key={item.id}>
-                <TableCell className="whitespace-normal py-3.5">
-                  <span className="block max-w-72 truncate text-sm text-slate-600 dark:text-slate-300">
-                    {item.comment}
-                  </span>
+                <TableCell className="max-w-72 whitespace-normal py-3.5 text-sm text-slate-600 dark:text-slate-300">
+                  {item.comment}
                 </TableCell>
                 <TableCell>
-                  <StatusBadge status={item.status} />
-                </TableCell>
-                <TableCell>
-                  <RiskBadge risk={item.risk} />
+                  <StatusBadge label={item.label} />
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap text-slate-500 dark:text-slate-400">
                   {item.date}
