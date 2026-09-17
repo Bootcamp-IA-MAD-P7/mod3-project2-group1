@@ -2,6 +2,8 @@
 
 **Historia:** [US-11](../../../docs/planning/stories/US-11.md) — Evaluar individualmente Multinomial Naive Bayes
 **Fecha:** 2026-09-16
+**Actualizado:** 2026-09-17 — rejilla de alpha ampliada hacia abajo, resultados regenerados y
+comparación con baseline Dummy
 **Estado:** Implementación + evaluación sobre development completadas. Test sellado sin tocar.
 
 ---
@@ -38,8 +40,12 @@ Ajuste básico de `alpha` (suavizado de Laplace) solo sobre folds de development
 presupuesto para todos los candidatos:
 
 ```
-alpha ∈ {0.01, 0.1, 0.5, 1.0, 2.0}
+alpha ∈ {0.0001, 0.001, 0.01, 0.1}
 ```
+
+La primera ejecución (informe del 2026-09-16) usó `{0.01, 0.1, 0.5, 1.0, 2.0}` y dejó al mejor valor
+en el extremo inferior. Siguiendo el próximo paso registrado, la rejilla se amplió hacia abajo y se
+regeneraron los resultados para confirmar o descartar una mejora.
 
 ### No realizado (fuera de scope)
 
@@ -75,7 +81,7 @@ python -m pytest tests/unit/test_multinomial_nb.py -v          # 3 passed
 # Suite completa del proyecto (verificación de no-regresión)
 python -m pytest tests/ -v                                      # 26 passed
 
-# Entrenamiento y evaluación
+# Entrenamiento, evaluación y comparación con baseline Dummy
 python -m ml.training.train_multinomial_nb
 ```
 
@@ -83,13 +89,13 @@ python -m ml.training.train_multinomial_nb
 
 | alpha | val F1 | gap F1 (train − val) | ¿mejor? |
 |---|---|---|---|
+| 0.0001 | 0.5362 | +0.4624 | |
+| 0.001 | 0.5390 | +0.4596 | |
 | 0.01 | 0.5517 | +0.4469 | **sí** |
 | 0.1 | 0.5120 | +0.4866 | |
-| 0.5 | 0.3669 | +0.6310 | |
-| 1.0 | 0.3142 | +0.6660 | |
-| 2.0 | 0.2337 | +0.6153 | |
 
-**Mejor hiperparámetro seleccionado: `alpha = 0.01`** (extremo inferior de la rejilla).
+**Mejor hiperparámetro seleccionado: `alpha = 0.01`** (interior de la rejilla ampliada). Los valores
+más pequeños (`0.001`, `0.0001`) empeoran la F1, lo que confirma que `0.01` ya no cae en un borde.
 
 ### Detalle por fold del mejor alpha
 
@@ -108,18 +114,35 @@ python -m ml.training.train_multinomial_nb
 | gap F1 medio (train − val) | +0.4469 |
 | Falsos negativos (total 3 folds) | 173 |
 | Falsos positivos (total 3 folds) | 151 |
-| Tiempo de ejecución | 1.69 s |
+| Tiempo de ejecución | 1.95 s |
 | Muestras development | 808 |
 | Muestras test sellado | 187 (sin usar) |
+
+### Comparación con el baseline Dummy
+
+El baseline común `DummyClassifier(strategy="most_frequent")` se evaluó en **los mismos folds agrupados**
+del desarrollo, sin tocar el test sellado:
+
+| Candidato | val F1 (media 3 folds) | gap F1 (train − val) |
+|---|---|---|
+| Baseline Dummy (most_frequent) | 0.1713 | +0.0604 |
+| MultinomialNB (`alpha=0.01`) | 0.5517 | +0.4469 |
+| Diferencia (MNB − Dummy) | **+0.3804** | |
+
+El MultinomialNB supera al baseline por 38 pp de F1 en la clase tóxica, por lo que la señal aprendida
+supera claramente a la mayoría de clase. El Dummy apenas tiene gap porque memoriza la clase dominante
+(train y val coinciden en predecir siempre "no tóxico"); el gap del MNB (+0.45) es un problema propio
+del modelo, no del protocolo de comparación.
 
 ---
 
 ## 5. Análisis técnico
 
-1. **El mejor `alpha` cayó en el borde inferior de la rejilla.** La F1 sube monótonamente al bajar
-   `alpha`, lo que sugiere que la rejilla está mal posicionada: conviene ampliarla hacia valores más
-   pequeños (`0.001`, `0.0001`) antes de cerrar la historia. No podemos afirmar que 0.01 sea el
-   óptimo global; solo es el mejor del presupuesto evaluado.
+1. **`alpha = 0.01` queda confirmado como óptimo de rejilla.** Tras ampliarla hacia abajo
+   (`{0.0001, 0.001, 0.01, 0.1}`), la F1 ya no sube de forma monótona: `0.0001` (0.5362) y `0.001`
+   (0.5390) empeoran frente a `0.01` (0.5517). El pico está en el interior de la rejilla, así que el
+   valor anterior dejó de ser sospechoso de borde. Sigue siendo un óptimo local dentro de un
+   presupuesto acotado, no un óptimo global garantizado.
 
 2. **Sobreajuste relevante (gap ≈ +0.45).** El modelo puntúa muy alto en train y cae en validación.
    Es un comportamiento típico de MultinomialNB con vocabulario grande (bigramas TF-IDF) sobre solo
@@ -129,25 +152,29 @@ python -m ml.training.train_multinomial_nb
    positivos (86 vs 40 FN); en los folds 2 y 3 dominan los falsos negativos. La varianza entre folds
    es alta (F1 de 0.52 a 0.61), coherente con un dataset pequeño y agrupado por video.
 
-4. **Posición frente al baseline.** Falta comparar con el `DummyClassifier(most_frequent)`, que es
-   el paso inmediato para valorar si la señal aprendida supera la mayoría de clase. Esta comparación
-   se hará formalmente al consolidar los resultados de los cuatro candidatos.
+4. **Posición frente al baseline.** El `DummyClassifier(most_frequent)` arroja val F1 0.1713 en los
+   mismos folds; el MultinomialNB lo supera en +0.38 de F1, lo que confirma señal real aprendida por
+   encima de la mayoría de clase. Falta la comparación formal con los otros tres candidatos, que se
+   hará al consolidar los resultados del equipo.
 
 ---
 
 ## 6. Limitaciones y próximos pasos
 
 **Limitaciones registradas:**
-- Rejilla demasiado angosta: `alpha=0.01` quedó en el extremo, por lo que el óptimo estimado es
-  provisional.
-- 808 muestras de development con vocabulario TF-IDF de bigramas generan sobreajuste estructural.
+- `alpha = 0.01` es un óptimo local razonablemente establecido en la rejilla, pero no un óptimo
+  global garantizado; una optimización posterior (Optuna, fuera de scope Essential) podría explorar
+  valores contiguos.
+- 808 muestras de development con vocabulario TF-IDF de bigramas generan sobreajuste estructural
+  (gap +0.45).
 - El test sellado no se ha utilizado y no se puede consultar en esta fase.
 
 **Próximos pasos:**
-1. Ampliar la rejilla a `{0.0001, 0.001, 0.01, 0.1}` para confirmar o descartar una mejora.
-2. Comparar formalmente contra el baseline Dummy y contra los otros tres candidatos (RL, LinearSVC,
-   SGDClassifier) con el protocolo común.
-3. Ejecutar la **revisión cruzada por otra persona** (AC3 de US-11) y registrar evidencia de los AC.
+1. Comparar formalmente contra los otros tres candidatos (LR, LinearSVC, SGDClassifier) con el
+   protocolo común; el baseline Dummy ya está cubierto en la sección 4.
+2. Ejecutar la **revisión cruzada por otra persona** (AC3 de US-11) y registrar evidencia de los AC.
+3. Si el candidato escala en la comparación, trabajar el sobreajuste: el gap +0.45 está muy por
+   encima del gate de 5 pp de ML-03 antes de poder abrir test.
 
 ---
 

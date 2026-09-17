@@ -14,11 +14,12 @@ from ml.data.dataset import (
 )
 from ml.evaluation.metrics import evaluate_binary_classification
 from ml.features.tfidf import create_tfidf_vectorizer
+from ml.models.baseline import create_dummy_classifier
 from ml.models.multinomial_nb import create_multinomial_nb
 
 DATA_PATH = Path(__file__).resolve().parents[3] / "data" / "youtoxic_english_1000.csv"
 
-ALPHA_GRID = [0.01, 0.1, 0.5, 1.0, 2.0]
+ALPHA_GRID = [0.0001, 0.001, 0.01, 0.1]
 
 
 def _prepare_data() -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -67,6 +68,38 @@ def _run_grouped_cv(
                 "gap_f1": train_metrics["f1"] - val_metrics["f1"],
                 "false_negatives": val_metrics["confusion_matrix"][1][0],
                 "false_positives": val_metrics["confusion_matrix"][0][1],
+            }
+        )
+
+    return results
+
+
+def _run_dummy_baseline(X: pd.DataFrame, y: pd.Series) -> list[dict]:
+    """Evaluate the common Dummy baseline on the same development folds.
+
+    El DummyClassifier con strategy="most_frequent" ignora las features, así
+    que se usa la misma X solo para respetar la partición por grupos.
+    """
+    groups = X[VIDEO_ID_COLUMN]
+    results = []
+    fold_n = 0
+
+    for train_idx, val_idx in create_grouped_cv().split(X, y, groups=groups):
+        fold_n += 1
+        model = create_dummy_classifier()
+        model.fit(X.loc[train_idx], y.loc[train_idx])
+        train_metrics = evaluate_binary_classification(
+            y.loc[train_idx], model.predict(X.loc[train_idx])
+        )
+        val_metrics = evaluate_binary_classification(
+            y.loc[val_idx], model.predict(X.loc[val_idx])
+        )
+        results.append(
+            {
+                "fold": fold_n,
+                "train_f1": train_metrics["f1"],
+                "val_f1": val_metrics["f1"],
+                "gap_f1": train_metrics["f1"] - val_metrics["f1"],
             }
         )
 
@@ -128,6 +161,15 @@ def main() -> None:
     elapsed = time.perf_counter() - start
     print(f"\nrecursos_tiempo_seg={elapsed:.2f}")
     print(f"train_samples={len(dev)} test_samples={len(test)} (sellado, sin usar)")
+
+    print("\n=== COMPARACIÓN CON BASELINE DUMMY (most_frequent) ===")
+    dummy_folds = _run_dummy_baseline(X, y)
+    dummy_val_f1 = sum(f["val_f1"] for f in dummy_folds) / len(dummy_folds)
+    dummy_gap = sum(f["gap_f1"] for f in dummy_folds) / len(dummy_folds)
+    mnb_val_f1 = mean("val_f1")
+    print(f"dummy_val_f1={dummy_val_f1:.4f} dummy_gap_f1={dummy_gap:+.4f}")
+    print(f"mnb_val_f1={mnb_val_f1:.4f} mnb_gap_f1={mean('gap_f1'):+.4f}")
+    print(f"diferencia_val_f1_mnb_minus_dummy={mnb_val_f1 - dummy_val_f1:+.4f}")
 
 
 if __name__ == "__main__":
