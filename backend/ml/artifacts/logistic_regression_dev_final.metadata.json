@@ -1,0 +1,46 @@
+{
+  "artifact_sha256": "f707df0e23a0a1ebb24ee12b4acf3dc92e162ba0c8a0cd64df2a7848df14ee53",
+  "generated_at_utc": "2026-09-18T11:36:57.657393+00:00",
+  "metadata_sha256": "bfc2208ab1c60ff31199fad8773c514cd8476684253bd028b1b07d809120b15f",
+  "model": {
+    "C": 5.0,
+    "class_weight": null,
+    "max_iter": 1000,
+    "name": "LogisticRegression",
+    "random_state": 42
+  },
+  "preprocessing": "normalize_text followed by casefold",
+  "runtime": {
+    "joblib": "1.6.0",
+    "pandas": "3.0.5",
+    "python": "3.12.13",
+    "scikit_learn": "1.9.1"
+  },
+  "schema_version": 1,
+  "tfidf": {
+    "max_features": null,
+    "min_df": 2,
+    "ngram_range": [
+      1,
+      1
+    ],
+    "stop_words": null,
+    "sublinear_tf": true
+  },
+  "training_data": {
+    "class_distribution": {
+      "False": 437,
+      "True": 371
+    },
+    "fingerprint_sha256": "b8f4ae05cc3336938ae14276901c87bceda6fc95c13d11280f61cbbed23ea7b5",
+    "holdout_video_ids_excluded": [
+      "4rCweDxDqdw",
+      "5vF4si3hoRA",
+      "8HB18hZrhXc",
+      "TZxEyoplYbI"
+    ],
+    "partition": "DEV only",
+    "row_count": 808,
+    "video_id_count": 9
+  }
+}

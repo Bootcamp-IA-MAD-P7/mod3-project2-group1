@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-09-18
+goal: Reentrenar Logistic Regression congelada exclusivamente sobre DEV y persistir su bundle previo a TEST
+skip_specs: true

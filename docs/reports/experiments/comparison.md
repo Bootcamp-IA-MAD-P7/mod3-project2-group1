@@ -1,68 +1,92 @@
-# Comparación de candidatos (US-15)
+# Comparación de candidatos clásicos (US-15)
 
-> Estado: **esqueleto en preparación — no hay decisión de selección todavía.**
-> Fecha de apertura: 2026-09-17.
+> Estado: **candidato seleccionado por decisión humana en DEV; TEST permanece sellado.**
+> Actualizado: 2026-09-18.
 
-Este documento compara el baseline Dummy y los cuatro candidatos clásicos bajo el **mismo protocolo**.
-Solo se rellenan resultados **observados** de informes existentes; el resto queda marcado como pendiente
-hasta que cada historia individual (US-11/12/13/14) entregue su informe revisado. El test sellado no se
-usa en ninguna fase de esta comparación.
-
----
+Este documento consolida la evidencia observada de los cuatro candidatos clásicos y registra la decisión humana de selección. No contiene evaluación TEST, reentrenamiento sobre DEV completo ni artefacto de inferencia.
 
 ## 1. Protocolo común
 
-Misma partición, mismos folds y mismas métricas para todos los candidatos (verificado en cada
-informe individual):
-
 | Componente | Valor común |
 |---|---|
-| Datos | `youtoxic_english_1000.csv` → 995 filas preparadas (dedup case-insensitive) |
-| Split sellado | 4 `VideoId` fijos como test, 187 muestras; nunca usado en fitting/tuning/comparación |
-| Development | 808 muestras |
-| Validación | `StratifiedGroupKFold(3, shuffle=True, random_state=42)` agrupado por `VideoId`; cero overlap de videos por fold |
-| Pipeline | TF-IDF común (`create_tfidf_vectorizer`), `normalize_text` + `casefold` |
-| Métrica primaria | F1 de la clase tóxica en validación (media 3 folds) |
-| Métricas secundarias | preción/recall, macro-F1, accuracy, estabilidad (std/min/max), gap train−val, FN/FP |
-| Umbral | Default del clasificador; umbral/calibración solo sobre development (AC1 US-15) |
+| Datos | `youtoxic_english_1000.csv` → 995 filas preparadas tras deduplicación case-insensitive |
+| Development | 808 filas; los `VideoId` de holdout se excluyen antes de la evaluación |
+| TEST | Sellado; no usado para fitting, tuning, predicción, métricas, inspección ni selección |
+| Validación | `StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=42)`, agrupado por `VideoId` |
+| Leakage | Cero `VideoId` compartidos entre train y validation en cada fold |
+| Preprocesamiento | `normalize_text` + `casefold` mediante TF-IDF común |
+| Ajuste de TF-IDF | Vectorizador nuevo, ajustado solo con los textos train de cada fold |
+| Métrica primaria | F1 de clase tóxica en validation, media de tres folds |
+| Métricas secundarias | Desviación, mínimo/máximo, precisión, recall, macro-F1, accuracy, F1 train, gap y matrices de confusión |
+| Umbral / resampling | Umbral por defecto; sin threshold tuning ni resampling |
 
-## 2. Criterios de decisión (a aplicar al consolidar)
+Los parámetros TF-IDF seleccionados pueden diferir entre candidatos por su tuning DEV individual. La comparación es de pipelines candidatos seleccionados bajo el protocolo común, no de algoritmos aislados con idénticos hiperparámetros.
 
-- **Superar al baseline Dummy** en F1 de clase tóxica (señal real).
-- **Estabilidad:** std entre folds baja y mínimo de fold aceptable.
-- **Coste de error (ML-02):** fijar antes de decidir si pesa más dejar pasar un tóxico (FN) o censurar
-  uno limpio (FP), según el uso de moderación.
-- **Gate de promoción (ML-03):** tras congelar el artefacto y el umbral, gap final
-  `abs(train − test) × 100 < 5 pp` y mínimos de calidad; si falla, se reporta el fallo y **no** se abre
-  iteración sobre el mismo test.
+## 2. Tabla común DEV
 
-## 3. Tabla de candidatos
+| Model | Selected configuration | Val F1 toxic mean | Val F1 std | Precision toxic | Recall toxic | Macro-F1 | Accuracy | Train F1 | Train-Val gap | Fold 1 F1 | Fold 2 F1 | Fold 3 F1 | Augmentation |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| MultinomialNB | `alpha=0.01`; `ngram=(1,2)`; `min_df=1`; `max_features=None` | 0.5517 | 0.0392 | 0.5919 | 0.5396 | 0.5869 | 0.5964 | 0.9987 | 44.69 pp | 0.5263 | 0.5217 | 0.6071 | No |
+| Logistic Regression | `C=5.0`; `ngram=(1,1)`; `min_df=2`; `max_features=None`; `class_weight=None` | 0.5518 | 0.0059 | 0.6343 | 0.5127 | 0.6049 | 0.6152 | 0.9823 | 43.05 pp | 0.5520 | 0.5590 | 0.5446 | No |
+| LinearSVC | `C=16.0`; `ngram=(1,1)`; `min_df=1`; `max_features=None`; `loss=squared_hinge` | 0.5741 | 0.0410 | 0.6118 | 0.5510 | 0.6091 | 0.6197 | 1.0000 | 42.59 pp | 0.5185 | 0.5878 | 0.6161 | No |
+| SGDClassifier | `loss=log_loss`; `alpha=0.0001`; `penalty=elasticnet`; `ngram=(1,2)`; `min_df=1`; `max_features=None` | 0.5370 | 0.0134 | 0.6223 | 0.5136 | 0.5862 | 0.5967 | 1.0000 | 46.30 pp | 0.5415 | 0.5189 | 0.5507 | No |
 
-| Candidato | Informe individual | val F1 tóxica | gap train−val | precisión / recall | macro-F1 / acc | FN / FP (3 folds) | Estado |
-|---|---|---|---|---|---|---|---|
-| Dummy `most_frequent` | (medido en run MNB) | 0.1713 | +0.0604 | pendiente | pendiente | pendiente | comparado |
-| MultinomialNB `alpha=0.01` | [Informe-MultinomialNB.md](../../../backend/ml/training/Informe-MultinomialNB.md) | 0.5517 | +0.4469 | pendiente de consolidar | pendiente | 173 / 151 | comparado |
-| Logistic Regression `C=5.0` | [`logistic_regression_dev.md`](logistic_regression_dev.md) | 0.5518 | +0.4305 | 0.6343 / 0.5127 | 0.6049 / 0.6152 | ver informe | pendiente de revisión cruzada |
-| LinearSVC | — | pendiente | pendiente | pendiente | pendiente | pendiente | sin informe |
-| SGDClassifier | — | pendiente | pendiente | pendiente | pendiente | pendiente | sin informe |
+## 3. Decisión humana y configuración congelada
 
-Notas:
-- Dummy y MultinomialNB provienen de la ejecución local de `train_multinomial_nb.py` en la rama
-  `bayes` (mismos folds).
-- Logistic Regression proviene de su informe individual en `dev`; se cita solo como referencia, aún no
-  ha pasado revisión cruzada de otra persona.
-- Ablations (p. ej. unigramas/`min_df` en LR, rejilla de `alpha` en MNB) se mantienen **separadas** en
-  cada informe individual y no se mezclan con el pipeline comparado.
+El equipo ha seleccionado **Logistic Regression** como candidato final para el siguiente paso controlado. La decisión se tomó exclusivamente con la evidencia DEV consolidada de esta tabla; no fue generada automáticamente y no afirma superioridad universal ni generalización demostrada fuera de DEV.
 
-## 4. Checklist US-15 (sin cubrir)
+La configuración queda congelada para el protocolo posterior:
 
-- [ ] AC1 — Consolidar con mismos folds, calidad y coste; umbral solo en development.
-- [ ] AC2 — Congelar artefacto antes de test; gap final < 5 pp o fallo reportado sin reabrir test.
-- [ ] AC3 — Reportar F1 por clase, matriz, FN/FP, limitaciones y decisión firmada (revisión cruzada).
+| Componente | Valor congelado |
+|---|---|
+| Clasificador | `LogisticRegression(C=5.0, class_weight=None, random_state=42, max_iter=1000)` |
+| TF-IDF | `ngram_range=(1,1)`, `min_df=2`, `max_features=None`, `stop_words=None`, `sublinear_tf=True` |
+| Preprocesamiento | `normalize_text` seguido de `casefold`, mediante la utilidad común |
+| Umbral | Default del clasificador; no se realizó threshold tuning |
+| Datos para la decisión | DEV original, sin augmentation |
 
-## 5. Próximos pasos
+La factoría existente `create_best_logistic_pipeline_observed_on_dev()` contiene esos mismos valores. La selección y congelación se realizaron antes de crear un bundle y antes de cualquier acceso a TEST. En una fase posterior e independiente, la configuración congelada se entrenó una sola vez sobre todo DEV y generó el bundle DEV-only `backend/ml/artifacts/logistic_regression_dev_final.joblib` con su metadata auditable. TEST continúa sellado: después de la selección no hubo tuning, threshold tuning ni cambio de configuración.
 
-1. Rellenar LinearSVC y SGDClassifier cuando sus historias (US-13/US-14) entreguen informe.
-2. Consolidar métricas con el evaluador común en una única tabla por candidato.
-3. Ejecutar revisión cruzada de cada informe individual (AC3 US-11/12/13/14) antes de decidir.
-4. Confirmar con el equipo el criterio de coste de error (FN vs FP) previo a la selección.
+### Justificación registrada
+
+F1 toxic es la métrica primaria. LinearSVC alcanzó mayor F1 media (`0.5741` frente a `0.5518`) y conserva ventaja de recall (`0.5510` frente a `0.5127`) y FN (`167` frente a `183`). El equipo prefirió Logistic Regression por el equilibrio observado entre rendimiento, estabilidad entre grupos de vídeo y necesidades del producto:
+
+- Logistic Regression: F1 por fold `0.5520 / 0.5590 / 0.5446`, desviación `0.0059` y rango `0.5446–0.5590`.
+- LinearSVC: F1 por fold `0.5185 / 0.5878 / 0.6161`, desviación `0.0410` y rango `0.5185–0.6161`.
+- Logistic Regression produjo `122` FP frente a `137` de LinearSVC y expone `predict_proba`; LinearSVC aporta márgenes, no probabilidades.
+
+La ventaja media de LinearSVC no fue uniforme entre los tres folds. Esta evidencia no demuestra que Logistic Regression generalice mejor ni que LinearSVC sea intrínsecamente inestable; expresa la preferencia del equipo bajo la composición DEV observada.
+
+### Limitaciones de la decisión
+
+- DEV contiene 808 comentarios y solo 9 `VideoId`; la CV agrupada tiene tres folds.
+- La prevalencia toxic y los vídeos dominantes cambian sustancialmente entre folds; la evidencia no separa el efecto de prevalencia del cambio de dominio por vídeo.
+- Todos los candidatos presentan gaps train-validation elevados.
+- TEST no intervino en comparación, tuning, selección, predicción, métricas ni inspección. Permanece sellado hasta después de esta selección y congelación.
+
+## 4. Evidencia por candidato
+
+- [MultinomialNB DEV evidence](multinomial_nb_dev.md) · [JSON](multinomial_nb_dev.json)
+- [Logistic Regression DEV experiment](logistic_regression_dev.md) · [JSON](logistic_regression_dev.json)
+- [LinearSVC DEV experiment](linear_svc_dev.md) · [JSON](linear_svc_dev.json)
+- [SGDClassifier DEV experiment](sgd_classifier_dev.md) · [JSON](sgd_classifier_dev.json)
+
+El baseline Dummy `most_frequent`, medido con el protocolo común, tiene F1 tóxica media 0.1713. Se conserva como referencia; no forma parte de los cuatro candidatos comparados.
+
+## 5. Augmentation
+
+La tabla principal excluye augmentation para los cuatro candidatos. El experimento separado de MultinomialNB con augmentation solo sobre train está documentado en [`augmentation.md`](augmentation.md); no es comparable directamente porque cambia las muestras de entrenamiento de cada fold.
+
+## 6. Límites de esta consolidación
+
+- La selección es una decisión humana de candidato pre-TEST, no un resultado final train-TEST ni una garantía de calidad fuera de DEV.
+- No se ha realizado evaluación final train-TEST ni se ha usado TEST para tomar decisiones.
+- DEV contiene nueve `VideoId` y muestra cambio de distribución por vídeo; los gaps train-validation deben formar parte de la revisión humana.
+- Antes de materializar la promoción de US-15, el equipo debe revisar explícitamente el coste relativo de FN y FP junto con las matrices de confusión por fold.
+
+## 7. Estado de US-15
+
+- [x] Selección DEV — El equipo eligió Logistic Regression y congeló la configuración anterior con evidencia de F1 toxic, estabilidad, precision/recall, FN/FP y matrices. No hubo threshold tuning.
+- [x] AC2.1 — El artefacto DEV-only de la configuración congelada se entrenó y persistió antes de cualquier evaluación TEST.
+- [ ] AC2.2 — Ejecutar la futura evaluación TEST autorizada y aplicar el gate train-TEST; si falla, reportarlo sin reabrir iteración sobre TEST.
+- [ ] AC3 — Registrar la decisión humana, F1 por clase, matrices, FN/FP y limitaciones mediante revisión cruzada.
