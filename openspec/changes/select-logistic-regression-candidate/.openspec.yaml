@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-09-18
+goal: Registrar la decisión humana de US-15 y congelar Logistic Regression antes de TEST
+skip_specs: true
