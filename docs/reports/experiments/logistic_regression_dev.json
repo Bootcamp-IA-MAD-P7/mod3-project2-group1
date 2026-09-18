@@ -26,7 +26,10 @@
     "C": 5.0,
     "min_df": 2,
     "max_features": null,
-    "ngram_range": [1, 1],
+    "ngram_range": [
+      1,
+      1
+    ],
     "class_weight": null,
     "random_state": 42,
     "max_iter": 1000,
@@ -34,7 +37,15 @@
     "resampling": false
   },
   "baseline": {
-    "configuration": {"C": 1.0, "min_df": 1, "max_features": null, "ngram_range": [1, 2]},
+    "configuration": {
+      "C": 1.0,
+      "min_df": 1,
+      "max_features": null,
+      "ngram_range": [
+        1,
+        2
+      ]
+    },
     "validation_f1_mean": 0.35423780054061743,
     "validation_f1_std": 0.15347261528715705,
     "validation_f1_min": 0.19718309859154928,
@@ -46,20 +57,86 @@
     "f1_gap_percentage_points": 61.824074170016516
   },
   "tuning": {
-    "round_1": {"candidate_count": 24, "best_configuration": {"C": 1.0, "min_df": 2, "max_features": null, "ngram_range": [1, 1]}, "best_validation_f1_mean": 0.4493842912383103},
-    "round_2": {"candidate_count": 6, "C_values": [0.25, 0.5, 0.75, 1.0, 1.5, 2.0], "best_C": 2.0, "best_validation_f1_mean": 0.5019648848836901},
-    "round_3": {"candidate_count": 5, "C_values": [2.0, 2.5, 3.0, 4.0, 5.0], "best_C": 5.0, "best_validation_f1_mean": 0.5518354735036822, "range_closed_at_C": 5.0},
+    "round_1": {
+      "candidate_count": 24,
+      "best_configuration": {
+        "C": 1.0,
+        "min_df": 2,
+        "max_features": null,
+        "ngram_range": [
+          1,
+          1
+        ]
+      },
+      "best_validation_f1_mean": 0.4493842912383103
+    },
+    "round_2": {
+      "candidate_count": 6,
+      "C_values": [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.5,
+        2.0
+      ],
+      "best_C": 2.0,
+      "best_validation_f1_mean": 0.5019648848836901
+    },
+    "round_3": {
+      "candidate_count": 5,
+      "C_values": [
+        2.0,
+        2.5,
+        3.0,
+        4.0,
+        5.0
+      ],
+      "best_C": 5.0,
+      "best_validation_f1_mean": 0.5518354735036822,
+      "range_closed_at_C": 5.0
+    },
     "c_evolution": [
-      {"C": 0.25, "validation_f1_mean": 0.26123106912580596},
-      {"C": 0.5, "validation_f1_mean": 0.3693813200734159},
-      {"C": 0.75, "validation_f1_mean": 0.41564429546319226},
-      {"C": 1.0, "validation_f1_mean": 0.4493842912383103},
-      {"C": 1.5, "validation_f1_mean": 0.48420359136604435},
-      {"C": 2.0, "validation_f1_mean": 0.5019648848836901},
-      {"C": 2.5, "validation_f1_mean": 0.5169937673874682},
-      {"C": 3.0, "validation_f1_mean": 0.5344218996106868},
-      {"C": 4.0, "validation_f1_mean": 0.5397090264931675},
-      {"C": 5.0, "validation_f1_mean": 0.5518354735036822}
+      {
+        "C": 0.25,
+        "validation_f1_mean": 0.26123106912580596
+      },
+      {
+        "C": 0.5,
+        "validation_f1_mean": 0.3693813200734159
+      },
+      {
+        "C": 0.75,
+        "validation_f1_mean": 0.41564429546319226
+      },
+      {
+        "C": 1.0,
+        "validation_f1_mean": 0.4493842912383103
+      },
+      {
+        "C": 1.5,
+        "validation_f1_mean": 0.48420359136604435
+      },
+      {
+        "C": 2.0,
+        "validation_f1_mean": 0.5019648848836901
+      },
+      {
+        "C": 2.5,
+        "validation_f1_mean": 0.5169937673874682
+      },
+      {
+        "C": 3.0,
+        "validation_f1_mean": 0.5344218996106868
+      },
+      {
+        "C": 4.0,
+        "validation_f1_mean": 0.5397090264931675
+      },
+      {
+        "C": 5.0,
+        "validation_f1_mean": 0.5518354735036822
+      }
     ]
   },
   "selected_results": {
@@ -76,10 +153,148 @@
       "f1_gap_percentage_points": 43.04762447873175
     },
     "folds": [
-      {"fold": 1, "train_size": 490, "validation_size": 318, "train_video_count": 6, "validation_video_count": 3, "video_overlap": [], "vocabulary_size": 1067, "train_density": 0.0177285159612111, "validation_density": 0.021216836719657184, "validation_metrics": {"accuracy": 0.6477987421383647, "precision": 0.4928571428571429, "recall": 0.6272727272727273, "f1": 0.552, "macro_f1": 0.6309222797927461, "confusion_matrix": [[137, 71], [41, 69]]}},
-      {"fold": 2, "train_size": 524, "validation_size": 284, "train_video_count": 7, "validation_video_count": 2, "video_overlap": [], "vocabulary_size": 1247, "train_density": 0.017841292384164743, "validation_density": 0.015270451901464924, "validation_metrics": {"accuracy": 0.6443661971830986, "precision": 0.6666666666666666, "recall": 0.48120300751879697, "f1": 0.5589519650655022, "macro_f1": 0.6305084309103322, "confusion_matrix": [[119, 32], [69, 64]]}},
-      {"fold": 3, "train_size": 602, "validation_size": 206, "train_video_count": 5, "validation_video_count": 4, "video_overlap": [], "vocabulary_size": 1505, "train_density": 0.01625589121532875, "validation_density": 0.00988614005096281, "validation_metrics": {"accuracy": 0.5533980582524272, "precision": 0.7432432432432432, "recall": 0.4296875, "f1": 0.5445544554455446, "macro_f1": 0.5532296086751533, "confusion_matrix": [[59, 19], [73, 55]]}}
+      {
+        "fold": 1,
+        "train_size": 490,
+        "validation_size": 318,
+        "train_video_count": 6,
+        "validation_video_count": 3,
+        "video_overlap": [],
+        "vocabulary_size": 1067,
+        "train_density": 0.0177285159612111,
+        "validation_density": 0.021216836719657184,
+        "validation_metrics": {
+          "accuracy": 0.6477987421383647,
+          "precision": 0.4928571428571429,
+          "recall": 0.6272727272727273,
+          "f1": 0.552,
+          "macro_f1": 0.6309222797927461,
+          "confusion_matrix": [
+            [
+              137,
+              71
+            ],
+            [
+              41,
+              69
+            ]
+          ]
+        },
+        "train_metrics": {
+          "accuracy": 0.9816326530612245,
+          "precision": 0.9809160305343512,
+          "recall": 0.9846743295019157,
+          "f1": 0.982791586998088,
+          "confusion_matrix": [
+            [
+              224,
+              5
+            ],
+            [
+              4,
+              257
+            ]
+          ],
+          "macro_f1": 0.9815489663655648
+        }
+      },
+      {
+        "fold": 2,
+        "train_size": 524,
+        "validation_size": 284,
+        "train_video_count": 7,
+        "validation_video_count": 2,
+        "video_overlap": [],
+        "vocabulary_size": 1247,
+        "train_density": 0.017841292384164743,
+        "validation_density": 0.015270451901464924,
+        "validation_metrics": {
+          "accuracy": 0.6443661971830986,
+          "precision": 0.6666666666666666,
+          "recall": 0.48120300751879697,
+          "f1": 0.5589519650655022,
+          "macro_f1": 0.6305084309103322,
+          "confusion_matrix": [
+            [
+              119,
+              32
+            ],
+            [
+              69,
+              64
+            ]
+          ]
+        },
+        "train_metrics": {
+          "accuracy": 0.982824427480916,
+          "precision": 0.9956709956709957,
+          "recall": 0.9663865546218487,
+          "f1": 0.9808102345415778,
+          "confusion_matrix": [
+            [
+              285,
+              1
+            ],
+            [
+              8,
+              230
+            ]
+          ],
+          "macro_f1": 0.9826330965454002
+        }
+      },
+      {
+        "fold": 3,
+        "train_size": 602,
+        "validation_size": 206,
+        "train_video_count": 5,
+        "validation_video_count": 4,
+        "video_overlap": [],
+        "vocabulary_size": 1505,
+        "train_density": 0.01625589121532875,
+        "validation_density": 0.00988614005096281,
+        "validation_metrics": {
+          "accuracy": 0.5533980582524272,
+          "precision": 0.7432432432432432,
+          "recall": 0.4296875,
+          "f1": 0.5445544554455446,
+          "macro_f1": 0.5532296086751533,
+          "confusion_matrix": [
+            [
+              59,
+              19
+            ],
+            [
+              73,
+              55
+            ]
+          ]
+        },
+        "train_metrics": {
+          "accuracy": 0.9867109634551495,
+          "precision": 0.9957805907172996,
+          "recall": 0.9711934156378601,
+          "f1": 0.9833333333333333,
+          "confusion_matrix": [
+            [
+              358,
+              1
+            ],
+            [
+              7,
+              236
+            ]
+          ],
+          "macro_f1": 0.9861418047882136
+        }
+      }
     ]
   },
-  "limitations": ["Only nine VideoId groups in DEV", "Substantial video-level distribution shift", "Train-validation gap remains 43.05 percentage points", "Not a global optimum", "Must be compared with Dummy, MultinomialNB, LinearSVC, and SGDClassifier before one authorised TEST evaluation"]
+  "limitations": [
+    "Only nine VideoId groups in DEV",
+    "Substantial video-level distribution shift",
+    "Train-validation gap remains 43.05 percentage points",
+    "Not a global optimum",
+    "Must be compared with Dummy, MultinomialNB, LinearSVC, and SGDClassifier before one authorised TEST evaluation"
+  ]
 }

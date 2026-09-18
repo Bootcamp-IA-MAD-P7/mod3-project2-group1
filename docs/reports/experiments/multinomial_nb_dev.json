@@ -1,0 +1,246 @@
+{
+  "model": "MultinomialNB",
+  "selection_label": "historically selected configuration reproduced on DEV",
+  "environment": {
+    "python": "3.12.14",
+    "scikit_learn": "1.9.1",
+    "pandas": "3.0.5"
+  },
+  "data_protocol": {
+    "source": "youtoxic_english_1000.csv",
+    "prepared_rows": 995,
+    "development_rows": 808,
+    "holdout_group_column": "VideoId",
+    "test_sealed": true,
+    "test_used_for_fitting_tuning_prediction_metrics_or_inspection": false,
+    "cross_validation": {
+      "strategy": "StratifiedGroupKFold",
+      "n_splits": 3,
+      "shuffle": true,
+      "random_state": 42,
+      "zero_video_overlap_per_fold": true
+    },
+    "primary_metric": "toxic_class_f1_validation_mean"
+  },
+  "selected_configuration": {
+    "alpha": 0.01,
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 1,
+    "max_features": null,
+    "augmentation": false
+  },
+  "historical_reproduction": {
+    "historical_validation_f1_mean": 0.5517,
+    "historical_validation_f1_by_fold": [
+      0.5263,
+      0.5217,
+      0.6071
+    ],
+    "tolerance": 0.0001,
+    "reproduced": true
+  },
+  "selected_results": {
+    "summary": {
+      "validation_f1_mean": 0.5517325923504414,
+      "validation_f1_std": 0.0392254979595655,
+      "validation_f1_min": 0.5217391304347826,
+      "validation_f1_max": 0.6071428571428571,
+      "validation_precision_mean": 0.59186932769407,
+      "validation_recall_mean": 0.5395804853041696,
+      "validation_macro_f1_mean": 0.5868547238575927,
+      "validation_accuracy_mean": 0.596421725074757,
+      "train_f1_mean": 0.9986638393507329,
+      "f1_gap_percentage_points": 44.69312470002915
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "train_size": 490,
+        "validation_size": 318,
+        "train_video_count": 6,
+        "validation_video_count": 3,
+        "train_video_ids": [
+          "#NAME?",
+          "04kJtp6pVXI",
+          "XRuCW80L9mA",
+          "bUgKZMSxr3E",
+          "cT14IbTDW2c",
+          "dG7mZQvaQDk"
+        ],
+        "validation_video_ids": [
+          "9pr1oE34bIM",
+          "Dt9-byUhPdg",
+          "dDbRyFIkNII"
+        ],
+        "video_overlap": [],
+        "vocabulary_size": 12819,
+        "train_density": 0.003795227428673318,
+        "validation_density": 0.0027921407933683344,
+        "train_metrics": {
+          "accuracy": 0.9979591836734694,
+          "precision": 0.9961832061068703,
+          "recall": 1.0,
+          "f1": 0.9980879541108987,
+          "confusion_matrix": [
+            [
+              228,
+              1
+            ],
+            [
+              0,
+              261
+            ]
+          ],
+          "macro_f1": 0.9979498851517294
+        },
+        "validation_metrics": {
+          "accuracy": 0.6037735849056604,
+          "precision": 0.44871794871794873,
+          "recall": 0.6363636363636364,
+          "f1": 0.5263157894736842,
+          "confusion_matrix": [
+            [
+              122,
+              86
+            ],
+            [
+              40,
+              70
+            ]
+          ],
+          "macro_f1": 0.5928876244665718
+        }
+      },
+      {
+        "fold": 2,
+        "train_size": 524,
+        "validation_size": 284,
+        "train_video_count": 7,
+        "validation_video_count": 2,
+        "train_video_ids": [
+          "#NAME?",
+          "9pr1oE34bIM",
+          "Dt9-byUhPdg",
+          "XRuCW80L9mA",
+          "bUgKZMSxr3E",
+          "cT14IbTDW2c",
+          "dDbRyFIkNII"
+        ],
+        "validation_video_ids": [
+          "04kJtp6pVXI",
+          "dG7mZQvaQDk"
+        ],
+        "video_overlap": [],
+        "vocabulary_size": 15013,
+        "train_density": 0.003718787229185088,
+        "validation_density": 0.0020111677860408304,
+        "train_metrics": {
+          "accuracy": 0.9980916030534351,
+          "precision": 0.99581589958159,
+          "recall": 1.0,
+          "f1": 0.9979035639412998,
+          "confusion_matrix": [
+            [
+              285,
+              1
+            ],
+            [
+              0,
+              238
+            ]
+          ],
+          "macro_f1": 0.998076125228093
+        },
+        "validation_metrics": {
+          "accuracy": 0.6126760563380281,
+          "precision": 0.6185567010309279,
+          "recall": 0.45112781954887216,
+          "f1": 0.5217391304347826,
+          "confusion_matrix": [
+            [
+              114,
+              37
+            ],
+            [
+              73,
+              60
+            ]
+          ],
+          "macro_f1": 0.598147671726267
+        }
+      },
+      {
+        "fold": 3,
+        "train_size": 602,
+        "validation_size": 206,
+        "train_video_count": 5,
+        "validation_video_count": 4,
+        "train_video_ids": [
+          "04kJtp6pVXI",
+          "9pr1oE34bIM",
+          "Dt9-byUhPdg",
+          "dDbRyFIkNII",
+          "dG7mZQvaQDk"
+        ],
+        "validation_video_ids": [
+          "#NAME?",
+          "XRuCW80L9mA",
+          "bUgKZMSxr3E",
+          "cT14IbTDW2c"
+        ],
+        "video_overlap": [],
+        "vocabulary_size": 18585,
+        "train_density": 0.00330920963839484,
+        "validation_density": 0.0012158777174409888,
+        "train_metrics": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "confusion_matrix": [
+            [
+              359,
+              0
+            ],
+            [
+              0,
+              243
+            ]
+          ],
+          "macro_f1": 1.0
+        },
+        "validation_metrics": {
+          "accuracy": 0.5728155339805825,
+          "precision": 0.7083333333333334,
+          "recall": 0.53125,
+          "f1": 0.6071428571428571,
+          "confusion_matrix": [
+            [
+              50,
+              28
+            ],
+            [
+              60,
+              68
+            ]
+          ],
+          "macro_f1": 0.5695288753799392
+        }
+      }
+    ]
+  },
+  "augmentation": {
+    "included_in_common_comparison": false,
+    "note": "No augmentation was used. The separate US-08 ablation remains documented in augmentation.md."
+  },
+  "limitations": [
+    "Only nine VideoId groups in DEV",
+    "Substantial video-level distribution shift",
+    "Train-validation gap is reported from DEV grouped CV",
+    "This run reproduces a fixed historical configuration; it does not tune alpha",
+    "No TEST evaluation was performed"
+  ]
+}
