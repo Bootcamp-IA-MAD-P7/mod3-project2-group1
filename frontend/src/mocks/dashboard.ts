@@ -1,4 +1,4 @@
-import { AlertTriangle, MessageSquare, ShieldCheck } from "lucide-react"
+import { AlertTriangle, FileText, MessageSquare, MessagesSquare, ShieldCheck } from "lucide-react"
 
 import type { DashboardViewModel } from "@/features/dashboard/dashboard-view-model"
 
@@ -17,18 +17,41 @@ export const DASHBOARD_MOCK_DATA: DashboardViewModel = {
       label: "Comments analyzed",
       value: 1284,
       icon: MessageSquare,
+      tone: "violet",
     },
     {
       id: "non-hate-comments",
       label: "Non-hate comments",
       value: 1032,
       icon: ShieldCheck,
+      tone: "green",
     },
     {
       id: "hate-comments",
       label: "Hate comments",
       value: 252,
       icon: AlertTriangle,
+      tone: "orange",
+    },
+  ],
+  analysisActions: [
+    {
+      id: "comment",
+      title: "Analyze comment",
+      description: "Review one comment to identify toxicity.",
+      icon: MessageSquare,
+    },
+    {
+      id: "conversation",
+      title: "Analyze conversation",
+      description: "Study the toxicity level in a YouTube video conversation.",
+      icon: MessagesSquare,
+    },
+    {
+      id: "content",
+      title: "Analyze content",
+      description: "Review video text to add context to comment reactions.",
+      icon: FileText,
     },
   ],
   recentActivity: [
