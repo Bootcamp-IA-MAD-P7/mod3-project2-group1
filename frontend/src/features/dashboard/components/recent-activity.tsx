@@ -18,13 +18,13 @@ interface RecentActivityProps {
 const STATUS_STYLES: Record<ModerationLabel, { label: string; badge: string; dot: string }> = {
   hate: {
     label: "Hate",
-    badge: "bg-violet-100 text-violet-800 dark:bg-violet-500/20 dark:text-violet-200",
-    dot: "bg-violet-600",
+    badge: "bg-orange-100 text-orange-800 dark:bg-orange-500/20 dark:text-orange-200",
+    dot: "bg-orange-500",
   },
   non_hate: {
     label: "Non-hate",
-    badge: "bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-100",
-    dot: "bg-slate-500",
+    badge: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-200",
+    dot: "bg-emerald-500",
   },
 }
 
@@ -40,20 +40,22 @@ function StatusBadge({ label }: { label: ModerationLabel }) {
 }
 
 export function RecentActivity({ activity }: RecentActivityProps) {
+  const recentItems = activity.slice(0, 3)
+
   return (
     <Card className="h-full p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold text-slate-900 dark:text-white">Recent activity</h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            A selection of recently reviewed comments.
+            A compact selection of analyzed comments.
           </p>
         </div>
       </div>
 
       <div className="mt-4 sm:hidden">
         <ul className="space-y-3" aria-label="Recent moderation activity">
-          {activity.map((item) => (
+          {recentItems.map((item) => (
             <li key={item.id} className="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
               <article className="space-y-3">
                 <p className="break-words text-sm text-slate-600 dark:text-slate-300">{item.comment}</p>
@@ -69,7 +71,7 @@ export function RecentActivity({ activity }: RecentActivityProps) {
 
       <div className="mt-4 hidden sm:block">
         <Table>
-          <TableCaption>Moderation results displayed in the dashboard.</TableCaption>
+          <TableCaption>A compact selection of analyzed comments.</TableCaption>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
               <TableHead className="min-w-56">Comment</TableHead>
@@ -78,7 +80,7 @@ export function RecentActivity({ activity }: RecentActivityProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {activity.map((item) => (
+            {recentItems.map((item) => (
               <TableRow key={item.id}>
                 <TableCell className="max-w-72 whitespace-normal py-3.5 text-sm text-slate-600 dark:text-slate-300">
                   {item.comment}

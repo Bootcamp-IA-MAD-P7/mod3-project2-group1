@@ -12,8 +12,8 @@ const LABELS = {
 } as const
 
 const COLORS = {
-  hate: "bg-violet-600",
-  non_hate: "bg-violet-200",
+  hate: "bg-orange-500 dark:bg-orange-400",
+  non_hate: "bg-emerald-500 dark:bg-emerald-400",
 } as const
 
 export function ModerationOverview({ totalAnalyzed, classifications }: ModerationOverviewProps) {
@@ -21,19 +21,19 @@ export function ModerationOverview({ totalAnalyzed, classifications }: Moderatio
     <Card className="h-full p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-900 dark:text-white">Moderation overview</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Toxicity distribution</h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Distribution of analyzed comments
+            Current distribution of analyzed comments
           </p>
         </div>
-        <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">
+        <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
           {totalAnalyzed.toLocaleString("en-US")} comments
         </span>
       </div>
 
       <div
         aria-label={`Distribution of ${totalAnalyzed.toLocaleString("en-US")} analyzed comments`}
-        className="mt-8 space-y-5"
+        className="mt-8 space-y-6"
       >
         {classifications.map((classification) => {
           const percentage = totalAnalyzed === 0 ? 0 : (classification.count / totalAnalyzed) * 100

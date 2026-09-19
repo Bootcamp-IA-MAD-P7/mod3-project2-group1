@@ -12,6 +12,14 @@ export interface DashboardStat {
   label: string
   value: number
   icon: LucideIcon
+  tone: "violet" | "green" | "orange"
+}
+
+export interface DashboardAnalysisAction {
+  id: "comment" | "conversation" | "content"
+  title: string
+  description: string
+  icon: LucideIcon
 }
 
 export interface RecentActivityItem {
@@ -27,5 +35,6 @@ export interface DashboardViewModel {
     classifications: ClassificationCount[]
   }
   stats: DashboardStat[]
+  analysisActions: DashboardAnalysisAction[]
   recentActivity: RecentActivityItem[]
 }
