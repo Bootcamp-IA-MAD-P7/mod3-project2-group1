@@ -47,7 +47,7 @@ def build_test_bundle(
     )
 
     artifact = root / "pipeline.joblib"
-    metadata_path = root / f"{artifact.name}.metadata.json"
+    metadata_path = root / f"{artifact.stem}.metadata.json"
     joblib.dump(pipeline, artifact)
 
     artifact_sha256 = hashlib.sha256(artifact.read_bytes()).hexdigest()

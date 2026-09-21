@@ -45,7 +45,7 @@ def test_unprefixed_routes_are_not_exposed():
 
 def test_production_disables_fake_predictor():
     """En producción el fake no está activo: readiness y predictions quedan en 503."""
-    app = create_app(settings=Settings(app_env="production"))
+    app = create_app(settings=Settings(_env_file=None, app_env="production"))
 
     with TestClient(app) as client:
         ready = client.get("/api/v1/health/ready")

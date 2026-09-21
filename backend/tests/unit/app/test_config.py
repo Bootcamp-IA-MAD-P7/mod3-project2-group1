@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from app.core.config import Settings
 
 
@@ -36,4 +38,5 @@ def test_model_metadata_path_default_empty():
 def test_model_metadata_path_resolves_sidecar():
     settings = Settings(_env_file=None, model_path="backend/ml/artifacts/pipe.joblib")
 
-    assert settings.model_metadata_path == "backend/ml/artifacts/pipe.joblib.metadata.json"
+    expected = str(Path("backend/ml/artifacts/pipe.joblib").with_suffix("").with_suffix(".metadata.json"))
+    assert settings.model_metadata_path == expected
