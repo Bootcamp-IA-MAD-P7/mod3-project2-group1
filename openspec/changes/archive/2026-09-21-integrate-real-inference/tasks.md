@@ -24,10 +24,10 @@
 
 ## Pendiente humano antes del archive de US-16
 
-Este change queda implementado y validado, pero **no se archiva ni se reclama cierre** hasta:
+Implementación y validaciones completas en esta rama. El cambio se archiva; queda registrado como **follow-up fuera del change** (no como tareas pendientes de su implementación):
 
-- [ ] Decisión del equipo sobre el gate US-15 (promoción del candidato); la integración sirve el bundle congelado DEV-only sin afirmar aprobación.
-- [ ] `/opsx:sync` y `/opsx:archive` tras revisión humana y commit manual con `Closes #` (Issue US-16).
+- Decisión del equipo sobre el gate US-15 (promoción del candidato): la integración sirve el bundle congelado DEV-only sin afirmar aprobación. El cierre formal de US-16/US-18 y la promoción quedan condicionados a ese gate.
+- Lanzado el archive (sincronización del delta `manual-analysis` API-04) tras CI verde; la Issue correspondiente se revisa manualmente por el equipo (no se cierra automáticamente por el agente).
 
 ## Evidencia de validación (real, ejecutada)
 
