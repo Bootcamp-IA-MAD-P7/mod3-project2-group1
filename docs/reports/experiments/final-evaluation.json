@@ -1,0 +1,70 @@
+{
+  "cost": {
+    "bundle_size_bytes": 48756,
+    "peak_memory_bytes": 2005751,
+    "runtime_seconds": 0.2787
+  },
+  "gate": {
+    "checks": [
+      {
+        "active": true,
+        "name": "gap_macro_f1_under_threshold",
+        "passed": false,
+        "threshold": 5.0,
+        "value": 33.6701
+      },
+      {
+        "active": true,
+        "name": "min_recall_hate",
+        "passed": true,
+        "threshold": 0.5,
+        "value": 0.6395
+      },
+      {
+        "active": true,
+        "name": "improve_over_dummy",
+        "passed": true,
+        "threshold": 0.5,
+        "value": 0.6458
+      }
+    ],
+    "gap_pp": 33.6701,
+    "passed": false
+  },
+  "generated_at_utc": "2026-09-21T07:40:31.940792+00:00",
+  "protocol": {
+    "dev_rows": 808,
+    "dummy_macro_f1": 0.5,
+    "gap_threshold_pp": 5.0,
+    "holdout_video_ids_excluded": [
+      "4rCweDxDqdw",
+      "5vF4si3hoRA",
+      "8HB18hZrhXc",
+      "TZxEyoplYbI"
+    ],
+    "min_recall": 0.5,
+    "test_rows": 187
+  },
+  "test": {
+    "accuracy": 0.6470588235294118,
+    "confusion_matrix": [
+      [
+        66,
+        35
+      ],
+      [
+        31,
+        55
+      ]
+    ],
+    "f1_hate": 0.625,
+    "fn": 31,
+    "fp": 35,
+    "macro_f1": 0.6458333333333333,
+    "precision_hate": 0.6111111111111112,
+    "recall_hate": 0.6395348837209303
+  },
+  "train": {
+    "macro_f1": 0.9825345849802372
+  }
+}

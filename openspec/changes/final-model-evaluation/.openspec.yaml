@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-09-21
+goal: Preparar el kit de evaluación final (una única corrida TEST autorizada, gate, coste y registro) para cerrar US-15
+skip_specs: true

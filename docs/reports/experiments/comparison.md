@@ -88,5 +88,9 @@ La tabla principal excluye augmentation para los cuatro candidatos. El experimen
 
 - [x] Selección DEV — El equipo eligió Logistic Regression y congeló la configuración anterior con evidencia de F1 toxic, estabilidad, precision/recall, FN/FP y matrices. No hubo threshold tuning.
 - [x] AC2.1 — El artefacto DEV-only de la configuración congelada se entrenó y persistió antes de cualquier evaluación TEST.
-- [ ] AC2.2 — Ejecutar la futura evaluación TEST autorizada y aplicar el gate train-TEST; si falla, reportarlo sin reabrir iteración sobre TEST.
-- [ ] AC3 — Registrar la decisión humana, F1 por clase, matrices, FN/FP y limitaciones mediante revisión cruzada.
+- [x] AC2.2 — Evaluación TEST única autorizada ejecutada el 2026-09-21 (evidencia en [`final-evaluation.md`](final-evaluation.md) y `final-evaluation.json`). **El gate de gap FALLA**: `abs(train macro-F1 0.9825 − test macro-F1 0.6458)×100 = 33.67 pp`, muy por encima del umbral spec ML-03 de 5 pp. Los mínimos OQ-03 sí se cumplen en TEST (recall hate 0.6395 ≥ 0.50; macro-F1 0.6458 > 0.50). Conforme a US-15, el fallo se reporta sin reabrir iteración sobre TEST: **no hay retuning ni cambio de umbral**.
+- [x] AC3 — Decisión humana registrada (sección 3), F1 por clase y macro en TEST, matriz de confusión, FN/FP y limitaciones documentadas; revisión cruzada realizada en sesión a petición del equipo (recomendable firma adicional de otro miembro).
+
+### Consecuencia del gate
+
+El candidato congelado **no se promueve**: falla el gate de gap train-TEST. Promoción bloqueada. La historia US-15 queda satisfecha como «fallo reportado» (AC2 exige el fallo honesto sin tuning), pero el gate de dependencia para US-16 (US-15 aprobado) **no está cumplido**; cualquier siguiente ciclo exige un nuevo protocolo con holdout independiente según el diseño.
