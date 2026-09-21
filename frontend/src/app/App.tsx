@@ -4,12 +4,13 @@ import { AppLayout } from "@/app/layout/app-layout"
 import { AnalyzeConversationPage } from "@/features/analyze-conversation/analyze-conversation-page"
 import { LoginPage } from "@/features/auth/login-page"
 import { DashboardPage } from "@/features/dashboard/dashboard-page"
+import { ManualAnalysisPage } from "@/features/manual-analysis/manual-analysis-page"
 import { SettingsPage } from "@/features/settings/settings-page"
 import type { AppSectionId } from "@/shared/navigation/nav-items"
 
 type AppView = "login" | AppSectionId
 
-const NAVIGABLE_VIEWS: AppSectionId[] = ["dashboard", "analyze-conversation", "settings"]
+const NAVIGABLE_VIEWS: AppSectionId[] = ["dashboard", "analyze-comment", "analyze-conversation", "settings"]
 
 export function App() {
   const [view, setView] = useState<AppView>("login")
@@ -27,6 +28,7 @@ export function App() {
   return (
     <AppLayout activeSection={view} onNavigate={handleNavigate}>
       {view === "dashboard" && <DashboardPage />}
+      {view === "analyze-comment" && <ManualAnalysisPage />}
       {view === "analyze-conversation" && <AnalyzeConversationPage />}
       {view === "settings" && <SettingsPage />}
     </AppLayout>

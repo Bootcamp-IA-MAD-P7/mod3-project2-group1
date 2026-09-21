@@ -35,13 +35,42 @@ Equivalentes PowerShell: `scripts/setup.ps1`.
 |---|---|---|
 | Ayuda | `make help` | — |
 | Instalación | `make setup` | `scripts/setup.ps1` |
-| Backend (dev) | `make dev-backend` | `uv run uvicorn app.main:app --reload` |
+| Backend (dev) | `make dev-backend` | `uv run uvicorn app.main:create_app --factory --reload` |
 | Frontend (dev) | `make dev-frontend` | `npm run dev` (en `frontend/`) |
 | Tests completos | `make test` | `scripts/test.ps1` |
 | Tests backend | `make test-backend` | `uv run pytest` |
 | Tests/chequeo frontend | `make test-frontend` | `npm run build` |
+| E2E Essential | — | `npm run test:e2e` (en `frontend/`, con browsers Playwright instalados) |
 | Lint | `make lint` | `scripts/lint.ps1` |
 | Formato | `make format` | — |
+
+### Ejecución real del recorrido Essential (US-18)
+
+El flujo completo (navegador → API → bundle real) se demuestra con E2E Playwright:
+
+```bash
+# 1) (una vez) instalar el navegador de Playwright
+cd frontend && npx playwright install chromium
+
+# 2) ejecutar el recorrido (levanta 2 backends + 2 vite, corre los specs y los apaga)
+cd frontend && npm run test:e2e
+```
+
+- `with-model`: comentario → `POST /api/v1/predictions` → señal real con `model_version` y error accesible.
+- `no-model`: sin `MODEL_PATH` (producción) → `503` y la UI muestra indisponibilidad sin señal inventada.
+- No requiere DB, YouTube, MLflow ni paquetes neuronales (smoke Essential).
+
+Para ejecución manual: backend con `MODEL_PATH` (p. ej. `ml/artifacts/logistic_regression_dev_final.joblib`,
+ver `.env.example`) arrancado con `uv run uvicorn app.main:create_app --factory --reload`, y frontend
+con `npm run dev`. Se accede al flujo desde la navegación **Analyze comment** tras entrar en la demo.
+
+### Evidencia del gate Essential (enlaces)
+
+El cierre formal del nivel Essential enlaza: TDD/tests (este informe y suites), EDA/NLP/gap
+([comparación DEV](docs/reports/experiments/comparison.md), [eval final](docs/reports/experiments/final-evaluation.md)),
+augmentation US-08 ([informe](docs/reports/experiments/augmentation.md)) y revisión accesible US-17.
+**Gates pendientes (no completados aún):** promoción del candidato (US-15, gap 33.67 pp reportado) y
+cierre formal de US-08 para declarar Essential completo.
 
 ### Configuración
 
