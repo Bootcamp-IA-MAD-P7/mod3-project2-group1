@@ -60,6 +60,3 @@ export const FINAL_NAV_ITEMS: NavItem[] = [
   { id: "laboratory", label: "Laboratory", icon: FlaskConical, badge: "DEV" },
   { id: "settings", label: "Settings", icon: Settings },
 ]
-
-// Temporary until routing supplies the active section from the current destination.
-export const ACTIVE_SECTION: AppSectionId = "dashboard"
