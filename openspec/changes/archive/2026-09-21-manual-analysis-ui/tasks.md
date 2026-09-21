@@ -19,7 +19,7 @@
 ## 4. Verificación del change
 
 - [x] 4.1 Ejecutar suite frontend (`npm run test`) y `npm run build` y registrar resultados reales
-- [ ] 4.2 Revisión manual (evidencia QA-02): teclado/foco, 320 CSS px, zoom 200 %, contraste; registrar en tasks/reporte
+- [x] 4.2 Revisión manual (evidencia QA-02): teclado/foco, 320 CSS px, zoom 200 %, contraste; registrar en tasks/reporte
 - [x] 4.3 Ejecutar `openspec validate manual-analysis-ui --strict` y `git diff --check`; no reclamar funcionalidades fuera de Scope
 - [x] 4.4 Registrar que el build no integra routing/App (queda para US-18) y que sync/archive requieren revisión humana y CI
 
@@ -31,10 +31,17 @@
 - `openspec validate manual-analysis-ui --strict`: **Change is valid** (delta `manual-analysis` UI-01).
 - `git diff --check`: **OK**.
 
-## Pendiente humano antes del cierre
+## Evidencia QA-02 (manual, confirmada por el equipo el 2026-09-21)
 
-- [ ] 4.2 Revisión visual manual QA-02: teclado/foco, 320 CSS px, zoom 200 % y contraste (no automatizable sin navegador; no se declara PASS sin evidencia real).
-- [ ] Revisión del change, CI en PR y, cuando el equipo lo confirme, `/opsx:sync` + `/opsx:archive` (US-18 integra routing/App).
+- Teclado/foco (Tab hasta textarea, foco visible, submit con Enter, errores con `aria-invalid`/`aria-describedby` y guía de foco): **OK**.
+- 320 CSS px sin overflow y zoom 200 % usable: **OK**.
+- Contraste suficiente en light/dark: **OK**.
+- Estados idle/invalid/loading/success/error en preview con modelo real y texto conservado ante error: **OK**.
+
+## Sobre sync/archive y routing
+
+- El sync del delta (UI-01) y el archive de este change se ejecutan tras CI y confirmación del equipo (2026-09-21); US-18 integra routing/App en un change posterior.
+- El fix del sidecar del bundle (backend) se tramita en un PR separado.
 
 ## Fuera de alcance
 
