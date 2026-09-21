@@ -30,11 +30,11 @@
 - Informe y ejecución real: `docs/reports/testing/report.md` (US-18) y README.
 - `openspec validate essential-integrated-product --strict`: **valid** · `git diff --check`: OK.
 
-## Pendiente humano antes de declarar Essential completo
+## Follow-up fuera de este cambio (no bloquean su implementación)
 
-- [ ] Gate «US-15 aprobado» (promoción del candidato; gap 33.67 pp reportado): decisión de equipo y, en su caso, nuevo ciclo con holdout independiente.
-- [ ] Evidencia formal de US-08 (augmentation) para el cierre del nivel.
-- [ ] Revisión de PR/CI y, cuando el equipo lo confirme, `/opsx:sync` + `/opsx:archive`.
+- Gate «US-15 aprobado» (promoción del candidato; gap 33.67 pp reportado): decisión de equipo y, en su caso, nuevo ciclo con holdout independiente. Sin él no se declara el nivel Essential completo.
+- Evidencia formal de US-08 (augmentation) para el cierre del nivel.
+- Revisión de PR/CI ya realizada (verde) y sync/archive de este change ejecutado tras confirmación del equipo.
 
 ## Fuera de alcance
 
