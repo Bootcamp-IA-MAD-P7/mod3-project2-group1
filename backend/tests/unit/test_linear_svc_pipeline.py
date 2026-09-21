@@ -24,21 +24,21 @@ def test_tfidf_is_not_fitted_before_training():
 
 
 def test_pipeline_reuses_the_shared_tfidf_vectorizer():
-    """El pipeline debe reutilizar el vectorizador común del proyecto."""
+    """El pipeline debe reutilizar el vectorizador común del proyecto con min_df seleccionado."""
     pipeline = create_linear_svc_pipeline()
 
-    assert pipeline.named_steps["tfidf"].get_params() == create_tfidf_vectorizer().get_params()
+    assert pipeline.named_steps["tfidf"].get_params() == create_tfidf_vectorizer(min_df=12).get_params()
 
 
-def test_generic_pipeline_defaults_remain_the_common_baseline():
-    """Los defaults genéricos deben coincidir con el pipeline común."""
+def test_generic_pipeline_defaults_match_the_selected_linear_svc_configuration():
+    """Los defaults del pipeline deben reflejar la configuración seleccionada de LinearSVC."""
     pipeline = create_linear_svc_pipeline()
 
     assert pipeline.named_steps["classifier"].C == 1.0
     assert pipeline.named_steps["classifier"].loss == "squared_hinge"
     assert pipeline.named_steps["classifier"].random_state == 42
     assert pipeline.named_steps["classifier"].max_iter == 1000
-    assert pipeline.named_steps["tfidf"].min_df == 1
+    assert pipeline.named_steps["tfidf"].min_df == 12
     assert pipeline.named_steps["tfidf"].max_features is None
     assert pipeline.named_steps["tfidf"].ngram_range == (1, 2)
 

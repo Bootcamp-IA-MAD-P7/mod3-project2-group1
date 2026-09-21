@@ -22,16 +22,16 @@ def test_tfidf_is_not_fitted_before_training():
     assert not hasattr(vectorizer, "vocabulary_")
 
 
-def test_sgd_pipeline_defaults_remain_the_common_baseline():
-    """Selecting SGDClassifier must not change the generic defaults."""
+def test_sgd_pipeline_defaults_match_the_selected_sgd_configuration():
+    """Selecting SGDClassifier must keep the generic classifier defaults and min_df=12."""
     pipeline = create_sgd_pipeline()
 
     assert pipeline.named_steps["classifier"].loss == "log_loss"
     assert pipeline.named_steps["classifier"].penalty == "l2"
-    assert pipeline.named_steps["classifier"].alpha == 1e-4
+    assert pipeline.named_steps["classifier"].alpha == 5e-4
     assert pipeline.named_steps["classifier"].random_state == 42
     assert pipeline.named_steps["classifier"].max_iter == 1000
-    assert pipeline.named_steps["tfidf"].min_df == 1
+    assert pipeline.named_steps["tfidf"].min_df == 12
     assert pipeline.named_steps["tfidf"].max_features is None
     assert pipeline.named_steps["tfidf"].ngram_range == (1, 2)
 
