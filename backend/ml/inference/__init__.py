@@ -1,0 +1,1 @@
+"""Contrato Python y adaptadores de inferencia real (US-16)."""
