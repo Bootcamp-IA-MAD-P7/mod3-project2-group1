@@ -1,11 +1,11 @@
 import { ShieldCheck, X } from "lucide-react"
 
 import {
-  ACTIVE_SECTION,
   APP_BRAND,
   FINAL_NAV_ITEMS,
   NAVIGATION_GROUPS,
   PRIMARY_NAV_ITEM,
+  type AppSectionId,
   type NavItem,
 } from "@/shared/navigation/nav-items"
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
@@ -14,16 +14,26 @@ import { cn } from "@/lib/utils"
 interface SidebarProps {
   open: boolean
   onClose: () => void
+  activeSection: AppSectionId
+  onNavigate: (section: AppSectionId) => void
 }
 
-function NavigationItem({ item }: { item: NavItem }) {
-  const active = item.id === ACTIVE_SECTION
+function NavigationItem({
+  item,
+  active,
+  onSelect,
+}: {
+  item: NavItem
+  active: boolean
+  onSelect: (id: AppSectionId) => void
+}) {
   const Icon = item.icon
 
   return (
     <li>
       <button
         type="button"
+        onClick={() => onSelect(item.id)}
         aria-current={active ? "page" : undefined}
         className={cn(
           "group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#8E2BB8]",
@@ -51,7 +61,7 @@ function NavigationItem({ item }: { item: NavItem }) {
   )
 }
 
-export function Sidebar({ open, onClose }: SidebarProps) {
+export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarProps) {
   return (
     <>
       <div
@@ -104,7 +114,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
         <nav aria-label="Primary" className="relative z-10 flex-1 overflow-y-auto px-3 py-5">
           <ul className="space-y-1">
-            <NavigationItem item={PRIMARY_NAV_ITEM} />
+            <NavigationItem item={PRIMARY_NAV_ITEM} active={activeSection === PRIMARY_NAV_ITEM.id} onSelect={onNavigate} />
           </ul>
 
           {NAVIGATION_GROUPS.map((group) => (
@@ -117,7 +127,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               </h2>
               <ul className="space-y-1">
                 {group.items.map((item) => (
-                  <NavigationItem key={item.id} item={item} />
+                  <NavigationItem key={item.id} item={item} active={activeSection === item.id} onSelect={onNavigate} />
                 ))}
               </ul>
             </section>
@@ -127,7 +137,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
           <ul className="space-y-1">
             {FINAL_NAV_ITEMS.map((item) => (
-              <NavigationItem key={item.id} item={item} />
+              <NavigationItem key={item.id} item={item} active={activeSection === item.id} onSelect={onNavigate} />
             ))}
           </ul>
 

@@ -1,16 +1,24 @@
 import { useState, type ReactNode } from "react"
 
 import { useAppearance } from "@/app/providers/appearance-provider"
+import { type AppSectionId } from "@/shared/navigation/nav-items"
 import { Header } from "@/shared/layout/header"
 import { Sidebar } from "@/shared/layout/sidebar"
 
 interface AppLayoutProps {
+  activeSection: AppSectionId
+  onNavigate: (section: AppSectionId) => void
   children: ReactNode
 }
 
-export function AppLayout({ children }: AppLayoutProps) {
+export function AppLayout({ activeSection, onNavigate, children }: AppLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { brightness } = useAppearance()
+
+  function handleNavigate(section: AppSectionId) {
+    setMobileMenuOpen(false)
+    onNavigate(section)
+  }
 
   return (
     <div className="min-h-dvh bg-[var(--app-shell-bg)]">
@@ -21,7 +29,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         Skip to main content
       </a>
 
-      <Sidebar open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <Sidebar open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} activeSection={activeSection} onNavigate={handleNavigate} />
 
       <div
         className="flex min-h-dvh flex-col lg:pl-72"
