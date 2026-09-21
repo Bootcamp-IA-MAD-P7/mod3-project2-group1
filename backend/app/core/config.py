@@ -1,5 +1,7 @@
 """Configuración central del backend mediante Pydantic Settings (D-09)."""
 
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,5 +26,8 @@ class Settings(BaseSettings):
 
     @property
     def model_metadata_path(self) -> str:
-        """Metadata sidecar del bundle: `<model_path>.metadata.json`."""
-        return f"{self.model_path}.metadata.json" if self.model_path else ""
+        """Metadata sidecar del bundle: mismo nombre base + `.metadata.json`."""
+        if not self.model_path:
+            return ""
+        base = str(Path(self.model_path).with_suffix(""))
+        return f"{base}.metadata.json"
