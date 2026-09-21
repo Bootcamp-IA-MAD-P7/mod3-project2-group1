@@ -21,3 +21,8 @@ class Settings(BaseSettings):
     def fake_predictor_enabled(self) -> bool:
         """El predictor fake solo está disponible fuera de producción."""
         return self.app_env != "production"
+
+    @property
+    def model_metadata_path(self) -> str:
+        """Metadata sidecar del bundle: `<model_path>.metadata.json`."""
+        return f"{self.model_path}.metadata.json" if self.model_path else ""

@@ -2,6 +2,7 @@
 
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,10 +15,31 @@ from app.core.config import Settings
 from app.core.errors import register_error_handlers
 from app.ports.predictor import Predictor
 from app.services.prediction_service import PredictionService
+from ml.inference.bundle import (
+    BundleCorruptError,
+    BundleIncompatibleError,
+    BundleMissingError,
+    load_bundle,
+)
+from ml.inference.bundle_predictor import BundlePredictor
 
 
 def _build_predictor(settings: Settings) -> Predictor | None:
-    """Solo permite el predictor fake en desarrollo; nunca en producción."""
+    """Carga el bundle real una vez, o usa fake solo en desarrollo.
+
+    Con `MODEL_PATH` configurado: si el bundle es válido se usa la inferencia
+    real; si es corrupto/faltante/incompatible no hay fallback Dummy. Sin
+    bundle: fake solo fuera de producción, nunca en producción.
+    """
+    if settings.model_path:
+        try:
+            pipeline, manifest = load_bundle(
+                Path(settings.model_path),
+                Path(settings.model_metadata_path),
+            )
+            return BundlePredictor(pipeline=pipeline, manifest=manifest)
+        except (BundleMissingError, BundleCorruptError, BundleIncompatibleError, OSError):
+            return None
     if settings.fake_predictor_enabled:
         return FakePredictor()
     return None
