@@ -8,12 +8,16 @@ from ml.evaluation.sgd_classifier_tuning import (
 
 
 def development_frame() -> pd.DataFrame:
-    """Create enough mixed-label videos for the common three-fold splitter."""
+    """Create enough mixed-label videos for the common three-fold splitter.
+
+    Cuatro filas por video garantizan que cada fold de entrenamiento tenga
+    al menos 12 documentos, requisito del min_df=12 del pipeline definitivo.
+    """
     return pd.DataFrame(
         {
-            "VideoId": [f"v{video}" for video in range(1, 7) for _ in range(2)],
-            "Text": [f"comment {row}" for row in range(12)],
-            "IsToxic": [False, True] * 6,
+            "VideoId": [f"v{video}" for video in range(1, 7) for _ in range(4)],
+            "Text": [f"comment {row}" for row in range(24)],
+            "IsToxic": [False, True] * 12,
         }
     )
 

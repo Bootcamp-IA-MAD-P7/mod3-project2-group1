@@ -8,10 +8,10 @@ from ml.models.sgd_classifier import create_sgd_classifier
 
 def create_sgd_pipeline(
     *,
-    alpha: float = 1e-4,
+    alpha: float = 5e-4,
     penalty: str = "l2",
     loss: str = "log_loss",
-    min_df: int = 1,
+    min_df: int = 12,
     max_features: int | None = None,
     ngram_range: tuple[int, int] = (1, 2),
 ) -> Pipeline:
