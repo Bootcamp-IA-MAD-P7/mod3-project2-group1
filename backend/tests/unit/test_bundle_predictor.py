@@ -76,30 +76,19 @@ def test_parity_between_bundle_and_offline_frozen_pipeline(tmp_path):
 
 def test_pipeline_includes_preprocessing_no_manual_normalization(tmp_path):
     """El pipeline real procesa texto crudo: parity con train_frozen sobre DEV."""
+    kind_rows = [f"this is a nice and honest comment number {i}" for i in range(12)]
+    hate_rows = [f"you are a disgusting and stupid person number {i}" for i in range(12)]
     prepared = prepare_binary_dataset(
         pd.DataFrame(
             {
-                "VideoId": ["v1"] * 12,
-                "Text": [
-                    "this is a nice and honest comment",
-                    "i really love this content",
-                    "great video thanks for sharing",
-                    "yes this is kind and respectful",
-                    "thanks for an excellent post",
-                    "this video is very helpful",
-                    "you are a complete fool",
-                    "hate you and everyone like you",
-                    "shut up you disgusting person",
-                    "idiot nonsense get lost",
-                    "stupid comments from a hateful user",
-                    "go away nobody wants you here",
-                ],
-                "IsToxic": [False] * 6 + [True] * 6,
+                "VideoId": ["v1"] * 24,
+                "Text": kind_rows + hate_rows,
+                "IsToxic": [False] * 12 + [True] * 12,
             }
         )
     )
     dev, _ = create_holdout_split(prepared)
-    frozen = train_frozen_logistic_pipeline(dev)
+    frozen = train_frozen_logistic_pipeline(dev)  # noqa: PB001
 
     artifact, metadata_path = build_test_bundle(tmp_path)
     pipeline, manifest = load_bundle(artifact, metadata_path)

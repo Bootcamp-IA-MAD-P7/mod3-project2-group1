@@ -15,19 +15,16 @@ from ml.models.logistic_pipeline import create_best_logistic_pipeline_observed_o
 
 
 def _synthetic_data() -> pd.DataFrame:
+    kind_rows = [
+        f"this is a nice and honest comment number {i}" for i in range(12)
+    ]
+    hate_rows = [
+        f"you are a disgusting and stupid person number {i}" for i in range(12)
+    ]
     rows = [
-        ("this is a nice and honest comment", False),
-        ("i really love this content", False),
-        ("great video thanks for sharing", False),
-        ("yes this is kind and respectful", False),
-        ("thanks for an excellent post", False),
-        ("this video is very helpful", False),
-        ("you are a complete fool", True),
-        ("hate you and everyone like you", True),
-        ("shut up you disgusting person", True),
-        ("idiot nonsense get lost", True),
-        ("stupid comments from a hateful user", True),
-        ("go away nobody wants you here", True),
+        (text, False) for text in kind_rows
+    ] + [
+        (text, True) for text in hate_rows
     ]
     return pd.DataFrame(rows, columns=[TEXT_COLUMN, TARGET_COLUMN])
 
@@ -63,7 +60,7 @@ def build_test_bundle(
         },
         "tfidf": {
             "ngram_range": [1, 1],
-            "min_df": 2,
+            "min_df": 12,
             "max_features": None,
             "stop_words": None,
             "sublinear_tf": True,

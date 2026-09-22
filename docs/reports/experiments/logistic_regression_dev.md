@@ -52,6 +52,32 @@ This is the **best configuration observed on DEV**, not a global optimum.
 | 2 | 524 / 284 | 7 / 2 | 0.5590 | 0.6667 | 0.4812 | 0.6305 | 0.6444 | `[[119,32],[69,64]]` | 1,247 | 1.78% / 1.53% |
 | 3 | 602 / 206 | 5 / 4 | 0.5446 | 0.7432 | 0.4297 | 0.5532 | 0.5534 | `[[59,19],[73,55]]` | 1,505 | 1.63% / 0.99% |
 
+## Overfitting reduction — min_df update
+
+A later DEV-only experiment swept `min_df` over `[1,2,3,5,10,12,15,20]` with `C=5.0`, `max_features=None`, `ngram_range=(1,1)` fixed, under the same protocol described above. `min_df=12` was the best balance: the gap dropped from 43.05 pp to 24.58 pp while validation toxic F1 rose from 0.5518 to 0.5953. Vocabulary mean per fold became 203. Degradation is clear from `min_df=15` onward, so the applied configuration kept `min_df=12`.
+
+The configuration currently applied to the Logistic Regression model flow is therefore:
+
+`C=5.0`, `min_df=12`, `max_features=None`, `ngram_range=(1,1)`, `class_weight=None`, `random_state=42`, `max_iter=1000`.
+
+This is the **best configuration observed on DEV**, not a global optimum.
+
+## Experiment 2 — C sweep (min_df=12 fixed)
+
+Fixed configuration: `min_df=12`, `ngram_range=(1,1)`, `max_features=None`, `penalty="l2"`, `solver="lbfgs"`, `class_weight=None`, `random_state=42`, `max_iter=1000`. Validation: `StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=42)` grouped by `VideoId`, DEV-only, TEST sealed.
+
+| C | Train F1 | Validation F1 | Std | Min / Max | Precision | Recall | Macro-F1 | Gap (pp) | Fold F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.5 | 0.7365 | 0.4465 | 0.0914 | 0.329 / 0.552 | 0.6584 | 0.4188 | 0.5444 | 29.00 | 0.552 / 0.459 / 0.329 |
+| 1.0 | 0.7839 | 0.5079 | 0.0499 | 0.440 / 0.557 | 0.6231 | 0.4732 | 0.5770 | 27.60 | 0.557 / 0.527 / 0.440 |
+| 2.0 | 0.8061 | 0.5602 | 0.0203 | 0.533 / 0.581 | 0.6315 | 0.5316 | 0.6078 | 24.60 | 0.567 / 0.581 / 0.533 |
+| 3.0 | 0.8235 | 0.5741 | 0.0048 | 0.570 / 0.581 | 0.6215 | 0.5525 | 0.6113 | 24.94 | 0.571 / 0.581 / 0.570 |
+| 5.0 | 0.8411 | 0.5953 | 0.0273 | 0.566 / 0.632 | 0.6194 | 0.5856 | 0.6213 | 24.58 | 0.566 / 0.589 / 0.632 |
+
+Conclusion: `C=5.0` keeps the highest validation toxic F1 (0.5953) and the lowest gap (24.58 pp, essentially tied with `C=2.0` at 24.60 pp). Reducing C does not meaningfully improve overfitting and lowers validation F1 (`C=2.0` loses 3.51 pp, `C=3.0` loses 2.12 pp with a slightly larger gap). Therefore `C=5.0` is maintained. This confirms the applied configuration from the min_df update above; it is the best result **within this sweep**, not a global optimum.
+
+Explicit constraints: TEST was not used; `comparison.md` was not modified; no threshold tuning, resampling, `class_weight`, GridSearchCV, or Optuna were used; the experiment produced no additional code changes (the only git modifications remain those from the prior `min_df=12` update).
+
 ## Comparison with baseline
 
 Selected configuration versus baseline: toxic F1 `+19.76 pp`, standard deviation `-14.76 pp`, minimum fold F1 `+34.74 pp`, toxic recall `+14.09 pp`, macro-F1 `+11.95 pp`, accuracy `+8.14 pp`, and gap `-18.78 pp`.
@@ -59,3 +85,5 @@ Selected configuration versus baseline: toxic F1 `+19.76 pp`, standard deviation
 ## Limitations
 
 DEV has only nine `VideoId` groups and substantial video-level distribution shift. The selected configuration still has a 43.05 pp train-validation gap, so it should not be treated as a final production choice or a global optimum. It must later be compared fairly with Dummy, MultinomialNB, LinearSVC, and SGDClassifier under the same DEV protocol before one candidate is frozen for a single authorised TEST evaluation.
+
+The `min_df=12` update above reduces the gap to 24.58 pp at the applied `C=5.0` (see the C sweep in Experiment 2), but it remains an overfitting-controlled DEV result, not a global optimum.
