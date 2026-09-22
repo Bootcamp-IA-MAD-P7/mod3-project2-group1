@@ -22,8 +22,8 @@ describe("App navigation (Essential)", () => {
     const sidebar = screen.getByRole("complementary", { name: /main navigation/i })
     await user.click(within(sidebar).getByRole("button", { name: /analyze comment/i }))
 
-    expect(screen.getByRole("heading", { name: /analyze a comment/i })).toBeTruthy()
-    expect(screen.getByLabelText("Comment")).toBeTruthy()
+    expect(screen.getByRole("heading", { name: "Analyze Comment" })).toBeTruthy()
+    expect(screen.getByLabelText("Comment to analyze")).toBeTruthy()
   })
 
   it("does not render optional-service views before reaching the manual analysis", async () => {

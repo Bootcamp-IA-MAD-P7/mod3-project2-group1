@@ -1,10 +1,10 @@
 import { useState } from "react"
 
 import { AppLayout } from "@/app/layout/app-layout"
+import { AnalyzeCommentPage } from "@/features/analyze-comment/analyze-comment-page"
 import { AnalyzeConversationPage } from "@/features/analyze-conversation/analyze-conversation-page"
 import { LoginPage } from "@/features/auth/login-page"
 import { DashboardPage } from "@/features/dashboard/dashboard-page"
-import { ManualAnalysisPage } from "@/features/manual-analysis/manual-analysis-page"
 import { SettingsPage } from "@/features/settings/settings-page"
 import type { AppSectionId } from "@/shared/navigation/nav-items"
 
@@ -28,7 +28,7 @@ export function App() {
   return (
     <AppLayout activeSection={view} onNavigate={handleNavigate}>
       {view === "dashboard" && <DashboardPage />}
-      {view === "analyze-comment" && <ManualAnalysisPage />}
+      {view === "analyze-comment" && <AnalyzeCommentPage />}
       {view === "analyze-conversation" && <AnalyzeConversationPage />}
       {view === "settings" && <SettingsPage />}
     </AppLayout>
