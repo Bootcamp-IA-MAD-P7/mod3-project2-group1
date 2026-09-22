@@ -16,20 +16,21 @@ from ml.training.final_logistic_regression import (
 
 
 def _development_fixture() -> pd.DataFrame:
-    return pd.DataFrame(
-        {
-            "VideoId": ["dev-a", "dev-a", "dev-b", "dev-b", "dev-c", "dev-c"],
-            "Text": [
-                "kind helpful comment",
-                "kind supportive comment",
-                "hate cruel comment",
-                "hate abusive comment",
-                "kind respectful comment",
-                "hate hostile comment",
-            ],
-            "IsToxic": [0, 0, 1, 1, 0, 1],
-        }
-    )
+    videos = [f"dev-{letter}" for letter in "abcdef"]
+    rows = []
+    for video_index, video in enumerate(videos):
+        for offset in range(4):
+            row_index = video_index * 4 + offset
+            toxic = row_index % 2 == 1
+            flavor = ("kind", "supportive", "respectful", "helpful") if not toxic else ("hate", "cruel", "abusive", "hostile")
+            rows.append(
+                {
+                    "VideoId": video,
+                    "Text": f"{flavor[offset]} comment number {row_index}",
+                    "IsToxic": int(toxic),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def test_select_development_data_excludes_all_holdout_video_ids():
@@ -54,7 +55,7 @@ def test_frozen_pipeline_has_the_selected_configuration_and_predict_proba():
     vectorizer = pipeline.named_steps["tfidf"]
     classifier = pipeline.named_steps["classifier"]
     assert vectorizer.ngram_range == (1, 1)
-    assert vectorizer.min_df == 2
+    assert vectorizer.min_df == 12
     assert vectorizer.max_features is None
     assert vectorizer.stop_words is None
     assert vectorizer.sublinear_tf is True

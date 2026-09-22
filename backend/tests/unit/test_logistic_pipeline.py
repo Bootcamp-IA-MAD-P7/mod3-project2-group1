@@ -46,6 +46,6 @@ def test_best_pipeline_observed_on_dev_has_the_selected_configuration():
     assert pipeline.named_steps["classifier"].class_weight is None
     assert pipeline.named_steps["classifier"].random_state == 42
     assert pipeline.named_steps["classifier"].max_iter == 1000
-    assert pipeline.named_steps["tfidf"].min_df == 2
+    assert pipeline.named_steps["tfidf"].min_df == 12
     assert pipeline.named_steps["tfidf"].max_features is None
     assert pipeline.named_steps["tfidf"].ngram_range == (1, 1)
