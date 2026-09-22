@@ -6,12 +6,47 @@ import { NotificationMenu } from "@/shared/layout/notification-menu"
 import { ThemeToggle } from "@/shared/layout/theme-toggle"
 import { UserBadge } from "@/shared/layout/user-badge"
 import { Separator } from "@/shared/ui/separator"
+import type { AppSectionId } from "@/shared/navigation/nav-items"
+
+const HEADER_COPY: Record<AppSectionId, { title: string; subtitle: string }> = {
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "Overview of your content moderation activity",
+  },
+  "analyze-comment": {
+    title: "Analyze Comment",
+    subtitle: "Review one comment with a moderation signal",
+  },
+  "analyze-conversation": {
+    title: "Analyze Conversation",
+    subtitle: "Review a YouTube conversation for moderation signals",
+  },
+  "analyze-content": {
+    title: "Analyze Content",
+    subtitle: "Content analysis will be available soon",
+  },
+  history: {
+    title: "History",
+    subtitle: "Analysis history will be available soon",
+  },
+  laboratory: {
+    title: "Laboratory",
+    subtitle: "Technical DEV evidence",
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Customize your review workspace",
+  },
+}
 
 interface HeaderProps {
   onMenuClick: () => void
+  activeSection: AppSectionId
 }
 
-export function Header({ onMenuClick }: HeaderProps) {
+export function Header({ onMenuClick, activeSection }: HeaderProps) {
+  const { title, subtitle } = HEADER_COPY[activeSection]
+
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white/80 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80">
       <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8">
@@ -25,10 +60,10 @@ export function Header({ onMenuClick }: HeaderProps) {
         </button>
         <div className="min-w-0">
           <p className="text-sm font-semibold text-slate-900 dark:text-white sm:text-base">
-            Dashboard
+            {title}
           </p>
           <p className="hidden text-xs text-slate-500 dark:text-slate-400 sm:block">
-            Overview of your content moderation activity
+            {subtitle}
           </p>
         </div>
       </div>

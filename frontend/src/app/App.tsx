@@ -27,7 +27,7 @@ export function App() {
 
   return (
     <AppLayout activeSection={view} onNavigate={handleNavigate}>
-      {view === "dashboard" && <DashboardPage />}
+      {view === "dashboard" && <DashboardPage onNavigate={handleNavigate} />}
       {view === "analyze-comment" && <AnalyzeCommentPage />}
       {view === "analyze-conversation" && <AnalyzeConversationPage />}
       {view === "settings" && <SettingsPage />}

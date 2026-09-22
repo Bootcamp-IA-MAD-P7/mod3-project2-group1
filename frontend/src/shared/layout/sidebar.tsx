@@ -28,6 +28,24 @@ function NavigationItem({
   onSelect: (id: AppSectionId) => void
 }) {
   const Icon = item.icon
+  const isAvailable = item.available !== false
+
+  if (!isAvailable) {
+    return (
+      <li>
+        <div
+          aria-label={`${item.label}: Coming soon`}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/55"
+        >
+          <Icon className="size-4.5 shrink-0 text-white/40" aria-hidden="true" />
+          <span className="truncate">{item.label}</span>
+          <span className="ml-auto rounded-full border border-violet-100/15 bg-violet-200/10 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-violet-100/75">
+            Coming soon
+          </span>
+        </div>
+      </li>
+    )
+  }
 
   return (
     <li>

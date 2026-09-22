@@ -23,6 +23,7 @@ export interface NavItem {
   label: string
   icon: LucideIcon
   badge?: string
+  available?: boolean
 }
 
 export interface NavGroup {
@@ -46,13 +47,13 @@ export const NAVIGATION_GROUPS: NavGroup[] = [
     items: [
       { id: "analyze-comment", label: "Analyze comment", icon: MessageSquareText },
       { id: "analyze-conversation", label: "Analyze conversation", icon: MessagesSquare },
-      { id: "analyze-content", label: "Analyze content", icon: FileText },
+      { id: "analyze-content", label: "Analyze content", icon: FileText, available: false },
     ],
   },
   {
     id: "results",
     label: "Results",
-    items: [{ id: "history", label: "History", icon: History }],
+    items: [{ id: "history", label: "History", icon: History, available: false }],
   },
 ]
 
