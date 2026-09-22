@@ -4,15 +4,25 @@ import { StatCard } from "@/features/dashboard/components/stat-card"
 import { ModerationOverview } from "@/features/dashboard/components/moderation-overview"
 import { RecentActivity } from "@/features/dashboard/components/recent-activity"
 import { QuickAnalysis } from "@/features/dashboard/components/quick-analysis"
+import type { AppSectionId } from "@/shared/navigation/nav-items"
 
-export function DashboardPage() {
+interface DashboardPageProps {
+  onNavigate?: (section: AppSectionId) => void
+}
+
+export function DashboardPage({ onNavigate }: DashboardPageProps) {
   const { summary, stats, analysisActions, recentActivity } = DASHBOARD_MOCK_DATA
+
+  function handleAnalysisAction(action: "comment" | "conversation" | "content") {
+    if (action === "comment") onNavigate?.("analyze-comment")
+    if (action === "conversation") onNavigate?.("analyze-conversation")
+  }
 
   return (
     <div className="space-y-8 lg:space-y-9">
       <CivikaHero />
 
-      <QuickAnalysis actions={analysisActions} />
+      <QuickAnalysis actions={analysisActions} onAction={handleAnalysisAction} />
 
       <section aria-label="Moderation statistics" className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((stat) => (
