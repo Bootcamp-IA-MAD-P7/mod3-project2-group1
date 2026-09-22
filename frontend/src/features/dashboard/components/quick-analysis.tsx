@@ -1,4 +1,5 @@
 import { ArrowUpRight, Sparkles } from "lucide-react"
+import { useLanguage } from "@/app/providers/language-provider"
 
 import type { DashboardAnalysisAction } from "@/features/dashboard/dashboard-view-model"
 import { cn } from "@/lib/utils"
@@ -31,24 +32,25 @@ const ACTION_STYLES = {
 } as const
 
 export function QuickAnalysis({ actions, onAction }: QuickAnalysisProps) {
+  const { t } = useLanguage()
   return (
     <section aria-labelledby="analysis-actions-title">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="inline-flex items-center gap-2 text-sm font-semibold text-violet-700 dark:text-violet-300">
             <Sparkles className="size-4" aria-hidden="true" />
-            Start with an analysis
+            {t("dashboard.start")}
           </p>
           <h2 id="analysis-actions-title" className="mt-2 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
-            Choose what you want to understand
+            {t("dashboard.choose")}
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400">
-          Select an analysis area to prepare your next moderation step.
+          {t("dashboard.chooseDescription")}
         </p>
       </div>
 
-      <ul className="mt-5 grid gap-4 md:grid-cols-3" aria-label="Available analysis areas">
+      <ul className="mt-5 grid gap-4 md:grid-cols-3" aria-label={t("dashboard.areas")}>
         {actions.map((action) => {
           const Icon = action.icon
           const styles = ACTION_STYLES[action.id]
@@ -67,21 +69,21 @@ export function QuickAnalysis({ actions, onAction }: QuickAnalysisProps) {
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <span className="mt-5 flex items-start justify-between gap-3">
-                      <span className="text-base font-semibold text-slate-900 dark:text-white">{action.title}</span>
+                      <span className="text-base font-semibold text-slate-900 dark:text-white">{t(`dashboard.${action.id}Action`)}</span>
                       <ArrowUpRight className={cn("size-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5", styles.accent)} aria-hidden="true" />
                     </span>
-                    <span className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{action.description}</span>
+                    <span className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{t(`dashboard.${action.id}Description`)}</span>
                   </button>
                 ) : (
-                  <div aria-label={`${action.title}: Coming soon`} className="flex h-full flex-col rounded-[calc(var(--radius-xl)-0.25rem)] p-4 text-left opacity-75 sm:p-5">
+                  <div aria-label={`${t(`dashboard.${action.id}Action`)}: ${t("common.comingSoon")}`} className="flex h-full flex-col rounded-[calc(var(--radius-xl)-0.25rem)] p-4 text-left opacity-75 sm:p-5">
                     <span className={cn("grid size-11 place-items-center rounded-xl", styles.icon)}>
                     <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <span className="mt-5 flex items-start justify-between gap-3">
-                      <span className="text-base font-semibold text-slate-900 dark:text-white">{action.title}</span>
-                      <span className="rounded-full border border-emerald-300/70 bg-white/55 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-800 dark:border-emerald-400/25 dark:bg-slate-950/20 dark:text-emerald-200">Coming soon</span>
+                      <span className="text-base font-semibold text-slate-900 dark:text-white">{t(`dashboard.${action.id}Action`)}</span>
+                      <span className="rounded-full border border-emerald-300/70 bg-white/55 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-emerald-800 dark:border-emerald-400/25 dark:bg-slate-950/20 dark:text-emerald-200">{t("common.comingSoon")}</span>
                     </span>
-                    <span className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{action.description}</span>
+                    <span className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{t(`dashboard.${action.id}Description`)}</span>
                   </div>
                 )}
               </Card>

@@ -39,7 +39,7 @@ export interface ConversationJobView {
   counts: ConversationCounts
   truncated: boolean
   stopReason: "source_exhausted" | "limit_reached" | "quota_exceeded" | "upstream_error" | null
-  errorMessage: string | null
+  errorMessageKey: string | null
   expiresAt: string
 }
 
@@ -50,8 +50,8 @@ export interface ConversationResultPage {
 
 export interface ConversationScenario {
   id: Exclude<ConversationAnalysisStatus, "initial" | "ready">
-  label: string
-  description: string
+  labelKey: string
+  descriptionKey: string
   job: ConversationJobView | null
   results: ConversationResultPage | null
 }

@@ -1,4 +1,5 @@
 import type { DashboardStat } from "@/features/dashboard/dashboard-view-model"
+import { useLanguage } from "@/app/providers/language-provider"
 import { Card } from "@/shared/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +19,7 @@ const TONE_STYLES = {
 } as const
 
 export function StatCard({ stat }: { stat: DashboardStat }) {
+  const { language, t } = useLanguage()
   const Icon = stat.icon
   const styles = TONE_STYLES[stat.tone]
 
@@ -26,9 +28,9 @@ export function StatCard({ stat }: { stat: DashboardStat }) {
       <span aria-hidden="true" className={cn("absolute inset-x-0 top-0 h-0.5", styles.icon)} />
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{t(`dashboard.${stat.id === "comments-analyzed" ? "commentsAnalyzed" : stat.id === "non-hate-comments" ? "nonHateComments" : "hateComments"}`)}</p>
           <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
-            {stat.value.toLocaleString("en-US")}
+            {stat.value.toLocaleString(language === "es" ? "es-ES" : "en-US")}
           </p>
         </div>
         <span

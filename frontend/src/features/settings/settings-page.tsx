@@ -4,6 +4,7 @@ import {
   useAppearance,
   type AppearanceTheme,
 } from "@/app/providers/appearance-provider"
+import { useLanguage } from "@/app/providers/language-provider"
 import { ROLE_PERMISSIONS, SETTINGS_USERS, type SettingsUserStatus } from "@/mocks/settings"
 import { AccessibilitySlider } from "@/shared/ui/accessibility-slider"
 import { Badge } from "@/shared/ui/badge"
@@ -28,7 +29,19 @@ const STATUS_TONE: Record<SettingsUserStatus, string> = {
   Pending: "bg-orange-500",
 }
 
+const CAPABILITY_KEYS: Record<string, string> = {
+  Dashboard: "nav.dashboard",
+  "Analyze Conversation": "nav.analyzeConversation",
+  "Analyze Comment": "nav.analyzeComment",
+  "Analyze Content": "nav.analyzeContent",
+  History: "nav.history",
+  Laboratory: "nav.laboratory",
+  Settings: "nav.settings",
+  "User Management": "settings.users",
+}
+
 export function SettingsPage() {
+  const { t } = useLanguage()
   const { theme, brightness, intensity, setTheme, setBrightness, setIntensity, reset } =
     useAppearance()
 
@@ -40,11 +53,10 @@ export function SettingsPage() {
           SETTINGS
         </p>
         <h1 id="settings-title" className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-          Settings
+          {t("settings.title")}
         </h1>
         <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
-          Visualization preferences, team members and role permissions for your review workspace.
-          Everything here is a frontend representation with local example data.
+          {t("settings.heading")} {t("settings.local")}
         </p>
       </header>
 
@@ -54,21 +66,21 @@ export function SettingsPage() {
             <span className="grid size-9 place-items-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
               <Palette className="size-4.5" aria-hidden="true" />
             </span>
-            Appearance
+            {t("settings.appearance")}
           </CardTitle>
           <CardDescription>
-            Choose how CIVIKA looks while you review comments and analysis signals.
+            {t("settings.chooseAppearance")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="mb-2 text-sm font-medium text-slate-900 dark:text-slate-100">Color theme</p>
+            <p className="mb-2 text-sm font-medium text-slate-900 dark:text-slate-100">{t("appearance.colorTheme")}</p>
             <div
               role="radiogroup"
-              aria-label="Color theme"
+              aria-label={t("appearance.colorTheme")}
               className="flex rounded-lg bg-slate-100 p-1 dark:bg-slate-800"
             >
-              {THEME_OPTIONS.map(({ value, label, Icon }) => {
+              {THEME_OPTIONS.map(({ value, Icon }) => {
                 const isActive = theme === value
                 return (
                   <button
@@ -76,7 +88,7 @@ export function SettingsPage() {
                     type="button"
                     role="radio"
                     aria-checked={isActive}
-                    aria-label={`${label} mode`}
+                    aria-label={`${t(value === "light" ? "appearance.light" : "appearance.dark")} ${t("appearance.mode")}`}
                     onClick={() => setTheme(value)}
                     className={cn(
                       "flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500",
@@ -86,7 +98,7 @@ export function SettingsPage() {
                     )}
                   >
                     <Icon className="size-4" aria-hidden="true" />
-                    {label}
+                    {t(value === "light" ? "appearance.light" : "appearance.dark")}
                   </button>
                 )
               })}
@@ -95,7 +107,7 @@ export function SettingsPage() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             <AccessibilitySlider
-              label="Brightness"
+              label={t("appearance.brightness")}
               min={20}
               max={100}
               value={brightness}
@@ -103,7 +115,7 @@ export function SettingsPage() {
               formatValue={(raw) => `${raw}%`}
             />
             <AccessibilitySlider
-              label="Visual intensity"
+              label={t("appearance.visualIntensity")}
               min={0}
               max={100}
               value={intensity}
@@ -113,8 +125,7 @@ export function SettingsPage() {
           </div>
 
           <p className="text-xs leading-5 text-slate-500 dark:text-slate-400">
-            Brightness adjusts the overall screen brightness. Visual intensity controls how strong
-            colors, shadows and gradients are across the interface.
+            {t("settings.appearanceHelp")}
           </p>
         </CardContent>
       </Card>
@@ -125,10 +136,10 @@ export function SettingsPage() {
             <span className="grid size-9 place-items-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
               <RotateCcw className="size-4.5" aria-hidden="true" />
             </span>
-            Reset appearance
+            {t("settings.resetAppearance")}
           </CardTitle>
           <CardDescription>
-            Restore the default theme, brightness and visual intensity.
+            {t("settings.resetDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -139,7 +150,7 @@ export function SettingsPage() {
             className="inline-flex items-center gap-2 rounded-xl border-violet-200 text-violet-800 hover:bg-violet-50 dark:border-violet-400/25 dark:text-violet-200 dark:hover:bg-violet-500/10"
           >
             <RotateCcw className="size-4" aria-hidden="true" />
-            Reset settings
+            {t("appearance.reset")}
           </Button>
         </CardContent>
       </Card>
@@ -150,20 +161,20 @@ export function SettingsPage() {
             <span className="grid size-9 place-items-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
               <Users className="size-4.5" aria-hidden="true" />
             </span>
-            User management
+            {t("settings.users")}
           </CardTitle>
           <CardDescription>
-            Team members and their assigned role. Example data, not connected to any backend.
+            {t("settings.usersDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("settings.name")}</TableHead>
+                <TableHead>{t("settings.email")}</TableHead>
+                <TableHead>{t("settings.role")}</TableHead>
+                <TableHead>{t("settings.status")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -172,12 +183,12 @@ export function SettingsPage() {
                   <TableCell className="font-medium text-slate-900 dark:text-white">{user.name}</TableCell>
                   <TableCell className="text-slate-600 dark:text-slate-300">{user.email}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={ROLE_BADGE_CLASS[user.role]}>{user.role}</Badge>
+                    <Badge variant="outline" className={ROLE_BADGE_CLASS[user.role]}>{t(user.role === "Administrator" ? "settings.administrator" : "settings.moderator")}</Badge>
                   </TableCell>
                   <TableCell>
                     <span className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                       <span aria-hidden="true" className={`size-2 rounded-full ${STATUS_TONE[user.status]}`} />
-                      {user.status}
+                      {t(user.status === "Active" ? "settings.active" : user.status === "Invited" ? "settings.invited" : "settings.pending")}
                     </span>
                   </TableCell>
                 </TableRow>
@@ -193,24 +204,24 @@ export function SettingsPage() {
             <span className="grid size-9 place-items-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
               <KeyRound className="size-4.5" aria-hidden="true" />
             </span>
-            Role permissions
+            {t("settings.permissions")}
           </CardTitle>
           <CardDescription>
-            Visual representation of what each role can access. Permissions are not enforced.
+            {t("settings.permissionsDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 lg:grid-cols-2">
           {(["Administrator", "Moderator"] as const).map((role) => (
             <div key={role} className="rounded-xl border border-violet-100 bg-violet-50/40 p-5 dark:border-violet-400/15 dark:bg-violet-500/5">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-slate-900 dark:text-white">{role}</p>
-                <Badge variant="outline" className={ROLE_BADGE_CLASS[role]}>{ROLE_PERMISSIONS[role].length} capabilities</Badge>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">{t(role === "Administrator" ? "settings.administrator" : "settings.moderator")}</p>
+                <Badge variant="outline" className={ROLE_BADGE_CLASS[role]}>{ROLE_PERMISSIONS[role].length} {t("settings.capabilities")}</Badge>
               </div>
               <ul className="mt-4 grid gap-2.5">
                 {ROLE_PERMISSIONS[role].map((capability) => (
                   <li key={capability} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
                     <CheckCircle2 className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-                    {capability}
+                    {t(CAPABILITY_KEYS[capability])}
                   </li>
                 ))}
               </ul>

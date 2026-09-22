@@ -1,4 +1,5 @@
 import { DASHBOARD_MOCK_DATA } from "@/mocks/dashboard"
+import { useLanguage } from "@/app/providers/language-provider"
 import { CivikaHero } from "@/features/dashboard/components/civika-hero"
 import { StatCard } from "@/features/dashboard/components/stat-card"
 import { ModerationOverview } from "@/features/dashboard/components/moderation-overview"
@@ -11,6 +12,7 @@ interface DashboardPageProps {
 }
 
 export function DashboardPage({ onNavigate }: DashboardPageProps) {
+  const { t } = useLanguage()
   const { summary, stats, analysisActions, recentActivity } = DASHBOARD_MOCK_DATA
 
   function handleAnalysisAction(action: "comment" | "conversation" | "content") {
@@ -24,7 +26,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
 
       <QuickAnalysis actions={analysisActions} onAction={handleAnalysisAction} />
 
-      <section aria-label="Moderation statistics" className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <section aria-label={t("dashboard.statsAria")} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((stat) => (
           <StatCard key={stat.id} stat={stat} />
         ))}
