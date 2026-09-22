@@ -1,25 +1,23 @@
 import { CheckCircle2, Sparkles } from "lucide-react"
+import { useLanguage } from "@/app/providers/language-provider"
 
 const WHY_ANALYZE_POINTS = [
   {
-    title: "Signals, not verdicts",
-    description: "Each classification is a moderation signal for one comment, never a judgment about a person.",
+    titleKey: "conversation.benefitFocus",
   },
   {
-    title: "Faster triage",
-    description: "Prioritize the comments that need attention without reviewing every single reply.",
+    titleKey: "conversation.benefitTime",
   },
   {
-    title: "Conversation context",
-    description: "Understand the general tone of a video conversation before deciding what to do.",
+    titleKey: "conversation.benefitTone",
   },
   {
-    title: "Support for human review",
-    description: "The final decision always stays with a human moderator.",
+    titleKey: "conversation.benefitHuman",
   },
 ]
 
 export function WhyAnalyzeCommentsCard() {
+  const { t } = useLanguage()
   return (
     <section
       aria-labelledby="why-analyze-comments-title"
@@ -43,24 +41,23 @@ export function WhyAnalyzeCommentsCard() {
         <div className="p-6 sm:p-8">
           <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-violet-700 dark:text-violet-300">
             <Sparkles className="size-3.5" aria-hidden="true" />
-            Overview
+            {t("conversation.overview")}
           </p>
           <h2 id="why-analyze-comments-title" className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-            Why analyze comments?
+            {t("conversation.why")}
           </h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300">
-            A single video can gather hundreds of comments. Understanding the main signals helps
-            moderators act with context instead of reacting to the loudest message.
+            {t("conversation.whyDescription")}
           </p>
           <ul className="mt-7 grid gap-5 sm:grid-cols-2">
             {WHY_ANALYZE_POINTS.map((point) => (
-              <li key={point.title} className="flex items-start gap-3">
+              <li key={point.titleKey} className="flex items-start gap-3">
                 <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-200">
                   <CheckCircle2 className="size-4" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{point.title}</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{point.description}</p>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{t(point.titleKey)}</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{t("conversation.reviewSignal")}</p>
                 </div>
               </li>
             ))}
@@ -71,7 +68,7 @@ export function WhyAnalyzeCommentsCard() {
           <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-violet-300/30 blur-3xl dark:bg-violet-500/15" />
           <img
             src="/image-robot.png"
-            alt="CIVIKA assistant robot that represents the comment analysis"
+            alt={t("conversation.robotAlt")}
             width={1536}
             height={1024}
             className="civika-float max-h-80 w-full max-w-md object-contain lg:max-h-[26rem]"

@@ -1,4 +1,5 @@
 import { Link, ShieldAlert, ShieldCheck, TrendingUp } from "lucide-react"
+import { useLanguage } from "@/app/providers/language-provider"
 
 import type { ConversationJobView } from "@/features/analyze-conversation/analyze-conversation-view-model"
 import { Badge } from "@/shared/ui/badge"
@@ -23,6 +24,7 @@ const RISK_STYLE: Record<RiskLevel, string> = {
 }
 
 export function ModerationResult({ url, job }: ModerationResultProps) {
+  const { t } = useLanguage()
   const analyzed = Math.max(job.analyzedCount, 0)
   const hate = Math.max(job.counts.hate, 0)
   const nonHate = Math.max(job.counts.nonHate, 0)
@@ -37,30 +39,30 @@ export function ModerationResult({ url, job }: ModerationResultProps) {
             <TrendingUp className="size-5" aria-hidden="true" />
           </span>
           <div>
-            <p className="text-sm font-semibold text-violet-700 dark:text-violet-300">Moderation result</p>
-            <h2 id="moderation-result-title" className="mt-1 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Conversation analysis summary</h2>
+            <p className="text-sm font-semibold text-violet-700 dark:text-violet-300">{t("conversation.moderationResult")}</p>
+            <h2 id="moderation-result-title" className="mt-1 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">{t("conversation.resultHeading")}</h2>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Risk level</span>
-          <Badge variant="outline" className={RISK_STYLE[risk]}>{risk}</Badge>
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{t("conversation.risk")}</span>
+          <Badge variant="outline" className={RISK_STYLE[risk]}>{t(`conversation.risk.${risk.toLowerCase()}`)}</Badge>
         </div>
       </div>
 
       <p className="mt-5 flex items-center gap-2 rounded-xl border border-violet-100 bg-white/70 px-3 py-2.5 text-sm text-slate-600 dark:border-violet-400/15 dark:bg-slate-950/40 dark:text-slate-300">
         <Link className="size-4 shrink-0 text-violet-600 dark:text-violet-300" aria-hidden="true" />
-        <span className="truncate" title={url}>Analyzed URL: {url}</span>
+        <span className="truncate" title={url}>{t("conversation.analyzedUrl")}: {url}</span>
       </p>
 
       <dl className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <ResultMetric label="Comments analyzed" value={analyzed} description="Main comments reviewed individually." />
-        <ResultMetric label="Potentially toxic" value={hate} description="Hate signals recommended for review." tone="hate" icon={<ShieldAlert className="size-4" />} />
-        <ResultMetric label="Non-toxic" value={nonHate} description="Comments classified as Non-hate." tone="positive" icon={<ShieldCheck className="size-4" />} />
-        <ResultMetric label="Toxicity rate" value={`${toxicity}%`} description="Share of comments with a Hate signal." />
+        <ResultMetric label={t("conversation.analyzed")} value={analyzed} description={t("conversation.classified")} />
+        <ResultMetric label={t("conversation.toxic")} value={hate} description={t("conversation.hateSignal")} tone="hate" icon={<ShieldAlert className="size-4" />} />
+        <ResultMetric label={t("conversation.nonToxic")} value={nonHate} description={t("conversation.nonHateSignal")} tone="positive" icon={<ShieldCheck className="size-4" />} />
+        <ResultMetric label={t("conversation.rate")} value={`${toxicity}%`} description={t("conversation.hateSignal")} />
       </dl>
 
       <p className="mt-4 text-xs leading-5 text-slate-500 dark:text-slate-400">
-        Demonstration result built with the existing local fixtures. No external service was contacted.
+        {t("conversation.demoResult")}
       </p>
     </section>
   )

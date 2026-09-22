@@ -1,5 +1,6 @@
 import { ShieldCheck, X } from "lucide-react"
 
+import { useLanguage } from "@/app/providers/language-provider"
 import {
   APP_BRAND,
   FINAL_NAV_ITEMS,
@@ -18,6 +19,16 @@ interface SidebarProps {
   onNavigate: (section: AppSectionId) => void
 }
 
+const LABEL_KEYS: Record<AppSectionId, string> = {
+  dashboard: "nav.dashboard",
+  "analyze-comment": "nav.analyzeComment",
+  "analyze-conversation": "nav.analyzeConversation",
+  "analyze-content": "nav.analyzeContent",
+  history: "nav.history",
+  laboratory: "nav.laboratory",
+  settings: "nav.settings",
+}
+
 function NavigationItem({
   item,
   active,
@@ -27,6 +38,7 @@ function NavigationItem({
   active: boolean
   onSelect: (id: AppSectionId) => void
 }) {
+  const { t } = useLanguage()
   const Icon = item.icon
   const isAvailable = item.available !== false
 
@@ -34,13 +46,13 @@ function NavigationItem({
     return (
       <li>
         <div
-          aria-label={`${item.label}: Coming soon`}
+          aria-label={`${t(LABEL_KEYS[item.id])}: ${t("common.comingSoon")}`}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/55"
         >
           <Icon className="size-4.5 shrink-0 text-white/40" aria-hidden="true" />
-          <span className="truncate">{item.label}</span>
+          <span className="truncate">{t(LABEL_KEYS[item.id])}</span>
           <span className="ml-auto rounded-full border border-violet-100/15 bg-violet-200/10 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-violet-100/75">
-            Coming soon
+            {t("common.comingSoon")}
           </span>
         </div>
       </li>
@@ -67,7 +79,7 @@ function NavigationItem({
           )}
           aria-hidden="true"
         />
-        <span className="truncate">{item.label}</span>
+        <span className="truncate">{t(LABEL_KEYS[item.id])}</span>
         {item.badge && (
           <span className="ml-auto rounded-full border border-violet-100/25 bg-violet-200/20 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-violet-50 shadow-[0_2px_8px_rgba(35,6,67,0.22)]">
             {item.badge}
@@ -80,6 +92,7 @@ function NavigationItem({
 }
 
 export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarProps) {
+  const { t } = useLanguage()
   return (
     <>
       <div
@@ -91,7 +104,7 @@ export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarPro
         )}
       />
       <aside
-        aria-label="Main navigation"
+        aria-label={t("nav.main")}
         className={cn(
           "fixed inset-y-0 left-0 z-50 isolate flex w-72 max-w-[85vw] flex-col overflow-hidden border-r border-violet-300/30 bg-gradient-to-b from-[#933CBA] via-[#7227A2] to-[#35105C] transition-transform duration-200 ease-out lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
@@ -123,14 +136,14 @@ export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarPro
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label={t("common.closeMenu")}
             className="inline-flex size-8 items-center justify-center rounded-lg text-white transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 lg:hidden"
           >
             <X className="size-4.5" aria-hidden="true" />
           </button>
         </div>
 
-        <nav aria-label="Primary" className="relative z-10 flex-1 overflow-y-auto px-3 py-5">
+        <nav aria-label={t("nav.primary")} className="relative z-10 flex-1 overflow-y-auto px-3 py-5">
           <ul className="space-y-1">
             <NavigationItem item={PRIMARY_NAV_ITEM} active={activeSection === PRIMARY_NAV_ITEM.id} onSelect={onNavigate} />
           </ul>
@@ -141,7 +154,7 @@ export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarPro
                 id={`${group.id}-navigation-title`}
                 className="px-3 pb-2 text-xs font-medium uppercase tracking-wider text-white/60"
               >
-                {group.label}
+                {t(`nav.${group.id}`)}
               </h2>
               <ul className="space-y-1">
                 {group.items.map((item) => (
@@ -164,9 +177,7 @@ export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarPro
             className="pointer-events-none absolute inset-x-6 bottom-7 hidden text-[13px] italic leading-5 text-violet-100/55 [@media(min-height:48rem)]:block"
           >
             <p>
-              Mejores conversaciones<br />
-              para un internet<br />
-              más humano.
+              {t("login.claim")}
             </p>
             <svg viewBox="0 0 72 12" className="mt-3 h-3 w-[72px]" fill="none">
               <path d="M2 8C16 2 33 2 48 6C57 8 64 8 70 3" stroke="rgba(237,233,254,0.5)" strokeWidth="1.5" strokeLinecap="round" />
@@ -182,10 +193,10 @@ export function Sidebar({ open, onClose, activeSection, onNavigate }: SidebarPro
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 leading-tight">
-              <p className="truncate text-sm font-medium text-white">Moderator</p>
+              <p className="truncate text-sm font-medium text-white">{t("common.moderator")}</p>
               <p className="flex items-center gap-1.5 text-xs text-white/70">
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-emerald-500" />
-                Content moderator
+                {t("common.contentModerator")}
               </p>
             </div>
           </div>

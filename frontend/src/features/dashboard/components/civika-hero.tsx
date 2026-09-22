@@ -1,6 +1,8 @@
 import { Sparkles } from "lucide-react"
+import { useLanguage } from "@/app/providers/language-provider"
 
 export function CivikaHero() {
+  const { t } = useLanguage()
   return (
     <section
       aria-labelledby="civika-hero-title"
@@ -21,13 +23,13 @@ export function CivikaHero() {
           CIVIKA
         </p>
         <h1 id="civika-hero-title" className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-          Good morning, Moderator
+          {t("dashboard.greeting")}
         </h1>
         <p className="mt-3 max-w-xl text-lg leading-relaxed text-slate-700 dark:text-slate-200">
-          Make space for healthier digital conversations.
+          {t("dashboard.tagline")}
         </p>
         <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
-          CIVIKA helps you understand the signals in a conversation and choose the next analysis with clarity.
+          {t("dashboard.description")}
         </p>
       </div>
     </section>
